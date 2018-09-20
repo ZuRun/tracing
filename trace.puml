@@ -1,0 +1,41 @@
+@startuml
+interface TraceContext
+interface ProducerTraceContext
+interface ConsumerTraceContext
+
+interface MqTraceContext
+interface RpcTraceContext
+
+abstract AbstractTraceContext
+abstract AbstractMqTraceContext
+abstract AbstractRpcTraceContext
+
+TraceContext <|-- ProducerTraceContext
+TraceContext <|-- ConsumerTraceContext
+
+ProducerTraceContext <|-- MqTraceContext
+ConsumerTraceContext <|-- MqTraceContext
+ProducerTraceContext <|-- RpcTraceContext
+ConsumerTraceContext <|-- RpcTraceContext
+
+
+ProducerTraceContext <|-- AbstractTraceContext
+ConsumerTraceContext <|-- AbstractTraceContext
+
+AbstractTraceContext <|-- AbstractMqTraceContext
+AbstractTraceContext <|-- AbstractRpcTraceContext
+
+MqTraceContext <|-- AbstractMqTraceContext
+RpcTraceContext <|-- AbstractRpcTraceContext
+
+class ArrayList {
+Object[] elementData
+size()
+}
+
+enum TimeUnit {
+DAYS
+HOURS
+MINUTES
+}
+@enduml

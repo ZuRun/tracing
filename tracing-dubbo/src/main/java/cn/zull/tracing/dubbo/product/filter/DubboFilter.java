@@ -1,6 +1,6 @@
 package cn.zull.tracing.dubbo.product.filter;
 
-import cn.zull.tracing.core.RpcTraceContext;
+import cn.zull.tracing.dubbo.RpcTraceContext;
 import cn.zull.tracing.core.dto.TraceDTO;
 import cn.zull.tracing.core.utils.SpringApplicationContext;
 import com.alibaba.dubbo.common.Constants;

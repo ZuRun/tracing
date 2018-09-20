@@ -4,6 +4,8 @@ import cn.zull.tracing.core.dto.TraceDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author zurun
  * @date 2018/9/17 09:49:14
@@ -22,10 +24,14 @@ public abstract class AbstractTraceContext implements TraceContext {
         return context.get();
     }
 
-
     @Override
-    public void addTraceDTO(TraceDTO traceDTO) {
+    public void product(@NotNull TraceDTO traceDTO) {
         context.set(traceDTO);
         print();
+    }
+
+    @Override
+    public TraceDTO consumer() {
+        return getTraceDto();
     }
 }

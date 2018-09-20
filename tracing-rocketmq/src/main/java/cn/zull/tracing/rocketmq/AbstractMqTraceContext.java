@@ -1,5 +1,6 @@
-package cn.zull.tracing.core;
+package cn.zull.tracing.rocketmq;
 
+import cn.zull.tracing.core.AbstractTraceContext;
 import cn.zull.tracing.core.dto.TraceDTO;
 
 import java.util.Optional;
@@ -19,4 +20,12 @@ public abstract class AbstractMqTraceContext extends AbstractTraceContext implem
     private TraceDTO getTraceDtoByMq() {
         return null;
     }
+
+    @Override
+    public TraceDTO consumer() {
+        TraceDTO traceDTO = getTraceDto();
+        return traceDTO;
+    }
+
+
 }

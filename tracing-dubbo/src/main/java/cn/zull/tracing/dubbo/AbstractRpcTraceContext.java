@@ -1,5 +1,6 @@
-package cn.zull.tracing.core;
+package cn.zull.tracing.dubbo;
 
+import cn.zull.tracing.core.AbstractTraceContext;
 import cn.zull.tracing.core.dto.TraceDTO;
 
 import java.util.HashMap;
@@ -17,6 +18,14 @@ public abstract class AbstractRpcTraceContext extends AbstractTraceContext imple
         return Optional.ofNullable(super.getTraceDto())
                 .orElseGet(this::getTraceBoByRpcContext);
     }
+
+
+    /**
+     * RpcContext values
+     *
+     * @return
+     */
+    public abstract Map<String, String> rpcValues();
 
     /**
      * 从rpcContext读取
@@ -46,10 +55,4 @@ public abstract class AbstractRpcTraceContext extends AbstractTraceContext imple
         return traceBO;
     }
 
-    /**
-     * RpcContext values
-     *
-     * @return
-     */
-    public abstract Map<String, String> rpcValues();
 }

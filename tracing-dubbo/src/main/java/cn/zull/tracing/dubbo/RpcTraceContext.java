@@ -1,4 +1,6 @@
-package cn.zull.tracing.core;
+package cn.zull.tracing.dubbo;
+
+import cn.zull.tracing.core.TraceContext;
 
 /**
  * @author zurun

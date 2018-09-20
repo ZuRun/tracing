@@ -16,9 +16,21 @@ public interface TraceContext {
     TraceDTO getTraceDto();
 
     /**
-     * 将dto新增到threadLocal入口
+     * 将dto新增到threadLocal入口(生产方/线程入口)
+     * 1. dubbo生产者      : 通过RpcContext获取dto并添加到threadLocal
+     * 2. controller层     : new一个dto并添加到threadLocal
+     * 3. mq消费者         : 获取message中properties属性,转为dto并添加到threadLocal
      *
      * @param traceDTO
      */
-    void addTraceDTO(TraceDTO traceDTO);
+    void product(TraceDTO traceDTO);
+
+    /**
+     * 1. dubbo         : 获取threadLocal中dto并添加到RpcContext中
+     * 2. restTemplate  : 获取threadLocal中dto并添加到请求头中
+     * 3. mq生产者       :  获取threadLocal中dto 并添加到message中properties属性
+     *
+     * @return dto
+     */
+    TraceDTO consumer();
 }

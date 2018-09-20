@@ -14,8 +14,14 @@
     <dependencies>
         <dependency>
             <groupId>cn.zull.tracing</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>tracing-core</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+            <version>4.1.0-incubating</version>
         </dependency>
     </dependencies>
 
