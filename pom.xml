@@ -11,7 +11,7 @@
     <modules>
         <module>core</module>
         <module>dubbo</module>
-        <module>rocketmq-producer</module>
+        <module>rocketmq</module>
     </modules>
 
     <properties>

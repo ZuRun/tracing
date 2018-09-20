@@ -4,6 +4,7 @@ import cn.zull.tracing.core.dto.TraceDTO;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author zurun
@@ -12,12 +13,17 @@ import java.util.Map;
 public abstract class AbstractRpcTraceContext extends AbstractTraceContext implements RpcTraceContext {
 
     @Override
-    public TraceDTO getTraceBo() {
-        return getTraceBoByRpcContext();
+    public TraceDTO getTraceDto() {
+        return Optional.ofNullable(super.getTraceDto())
+                .orElseGet(this::getTraceBoByRpcContext);
     }
 
-    @Override
-    public TraceDTO getTraceBoByRpcContext() {
+    /**
+     * 从rpcContext读取
+     *
+     * @return
+     */
+    private TraceDTO getTraceBoByRpcContext() {
 
         TraceDTO traceDTO = map2TraceDto(rpcValues());
         if (traceDTO != null) {

@@ -27,7 +27,7 @@ public class DubboFilter implements Filter {
         // 线程入口是dubbo的,记得先清空线程绑定的变量(使用线程池的情况下)
         logger.info("filter");
 
-        TraceDTO traceDTO = traceContext.getTraceBoByRpcContext();
+        TraceDTO traceDTO = traceContext.getTraceDto();
         logger.info("traceBO:{}", traceDTO);
         return invoker.invoke(invocation);
     }

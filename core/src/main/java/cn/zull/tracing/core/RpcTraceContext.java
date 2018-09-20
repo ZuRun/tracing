@@ -1,7 +1,5 @@
 package cn.zull.tracing.core;
 
-import cn.zull.tracing.core.dto.TraceDTO;
-
 /**
  * @author zurun
  * @date 2018/9/17 10:20:06
@@ -13,10 +11,5 @@ public interface RpcTraceContext extends TraceContext {
      */
     void addRpcContext();
 
-    /**
-     * 从rpcContext读取
-     * @return
-     */
-    TraceDTO getTraceBoByRpcContext();
 
 }

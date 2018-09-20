@@ -8,10 +8,15 @@ import cn.zull.tracing.core.dto.TraceDTO;
  */
 public interface TraceContext {
 
-    TraceDTO getTraceBo();
+    /**
+     * 获取traceDto
+     *
+     * @return
+     */
+    TraceDTO getTraceDto();
 
     /**
-     * 将bo新增到threadLocal入口
+     * 将dto新增到threadLocal入口
      *
      * @param traceDTO
      */
