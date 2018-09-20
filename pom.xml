@@ -9,9 +9,9 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>core</module>
-        <module>dubbo</module>
-        <module>rocketmq</module>
+        <module>tracing-core</module>
+        <module>tracing-dubbo</module>
+        <module>tracing-rocketmq</module>
     </modules>
 
     <properties>
