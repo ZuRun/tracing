@@ -19,6 +19,8 @@ rebel.xml
 ###
 .gradle
 *.class
+# 调整jar包版本的备份文件
+pom.xml.versionsBackup
 
 ### IntelliJ IDEA ###
 .idea
