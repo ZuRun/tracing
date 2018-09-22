@@ -5,9 +5,11 @@ import cn.zull.tracing.core.dto.TraceDTO;
 import com.alibaba.dubbo.rpc.RpcContext;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * @author zurun
@@ -20,6 +22,13 @@ public class DubboTraceContext extends AbstractTraceContext implements RpcTraceC
     public TraceDTO getTraceDto() {
         return Optional.ofNullable(super.getTraceDto())
                 .orElseGet(this::getTraceDTOByRpcContext);
+    }
+
+    @Override
+    public void product(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
+        TraceDTO traceDTO = getTraceDTOByRpcContext();
+        traceDTOConsumer.accept(traceDTO);
+        setContext(traceDTO);
     }
 
     @Override
@@ -42,9 +51,9 @@ public class DubboTraceContext extends AbstractTraceContext implements RpcTraceC
         Map map = RpcContext.getContext().getAttachments();
         TraceDTO traceDTO = map2TraceDto(map);
         if (traceDTO != null) {
-            context.set(traceDTO);
+            setContext(traceDTO);
         }
-        return context.get();
+        return getContext();
     }
 
     protected Map<String, String> traceDto2Map(TraceDTO traceDTO) {

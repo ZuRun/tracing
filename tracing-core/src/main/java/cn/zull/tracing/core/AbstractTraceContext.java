@@ -14,27 +14,35 @@ import java.util.function.Consumer;
 public abstract class AbstractTraceContext implements TraceContext {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected static final ThreadLocal<TraceDTO> context = ThreadLocal.withInitial(TraceDTO::new);
+    private static final ThreadLocal<TraceDTO> context = ThreadLocal.withInitial(TraceDTO::new);
 
     protected void print() {
-        logger.info("traceDTO:{}", context.get());
+        logger.info("traceDTO:{}", getContext());
     }
 
     @Override
     public TraceDTO getTraceDto() {
-        return context.get();
+        return getContext();
     }
 
     @Override
     public void product(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
         TraceDTO traceDTO = new TraceDTO();
         traceDTOConsumer.accept(traceDTO);
-        context.set(traceDTO);
+        setContext(traceDTO);
         print();
     }
 
     @Override
     public TraceDTO consumer() {
         return getTraceDto();
+    }
+
+    public void setContext(TraceDTO traceDTO) {
+        context.set(traceDTO);
+    }
+
+    public TraceDTO getContext() {
+        return context.get();
     }
 }
