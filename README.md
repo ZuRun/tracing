@@ -31,3 +31,9 @@ mvn clean deploy -X
 或
 mvn clean deploy -P release
 ```
+
+# 问题
+
+1. springboot自动扫描bean的问题
+2. auto configuration
+3. spring.factories

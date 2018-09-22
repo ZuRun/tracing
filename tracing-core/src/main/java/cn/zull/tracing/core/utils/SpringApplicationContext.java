@@ -3,6 +3,7 @@ package cn.zull.tracing.core.utils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
  * @date 2018/7/13 11:20:06
  */
 @Component("springApplicationContextUtils")
+@Order(Integer.MIN_VALUE)
 public class SpringApplicationContext implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 

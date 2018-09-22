@@ -1,12 +1,11 @@
 package cn.zull.tracing.rocketmq.product;
 
-import cn.zull.tracing.core.utils.SpringApplicationContext;
-import cn.zull.tracing.rocketmq.MqTraceContext;
 import cn.zull.tracing.rocketmq.RocketmqTraceContext;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
@@ -28,7 +27,8 @@ public class DefaultMQProducerProxyFactory implements MethodInterceptor {
     private final Boolean useProxy;
     private final Boolean DefaultUseProxy = true;
 
-    private MqTraceContext traceContext = SpringApplicationContext.getBean(RocketmqTraceContext.class);
+    @Autowired
+    private RocketmqTraceContext traceContext;
 
     private DefaultMQProducerProxyFactory(Boolean useProxy) {
         this.useProxy = useProxy;

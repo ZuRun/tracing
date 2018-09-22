@@ -17,7 +17,7 @@ public abstract class AbstractTraceContext implements TraceContext {
     protected static final ThreadLocal<TraceDTO> context = ThreadLocal.withInitial(TraceDTO::new);
 
     protected void print() {
-        logger.info("traceBo:{}", context.get());
+        logger.info("traceDTO:{}", context.get());
     }
 
     @Override

@@ -29,7 +29,7 @@ public interface TraceContext {
     void product(@NotNull Consumer<TraceDTO> traceDTOConsumer);
 
     /**
-     * 1. dubbo         : 获取threadLocal中dto并添加到RpcContext中
+     * 1. dubbo消费者         : 获取threadLocal中dto并添加到RpcContext中
      * 2. restTemplate  : 获取threadLocal中dto并添加到请求头中
      * 3. mq生产者       :  获取threadLocal中dto 并添加到message中properties属性
      *

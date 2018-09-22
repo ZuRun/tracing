@@ -9,7 +9,7 @@ import cn.zull.tracing.core.TraceContext;
 public interface RpcTraceContext extends TraceContext {
 
     /**
-     * 调用远程rpc接口,将threadLocal中TraceBO赋值给rpcContext
+     * 调用远程rpc接口,将threadLocal中TraceDTO赋值给rpcContext
      */
     void addRpcContext();
 
