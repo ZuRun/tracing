@@ -1,5 +1,6 @@
 package cn.zull.tracing.rocketmq.product;
 
+import cn.zull.tracing.core.utils.SpringApplicationContext;
 import cn.zull.tracing.rocketmq.MqTraceContext;
 import cn.zull.tracing.rocketmq.RocketmqTraceContext;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
@@ -27,7 +28,7 @@ public class DefaultMQProducerProxyFactory implements MethodInterceptor {
     private final Boolean useProxy;
     private final Boolean DefaultUseProxy = true;
 
-    private MqTraceContext traceContext;
+    private MqTraceContext traceContext = SpringApplicationContext.getBean(RocketmqTraceContext.class);
 
     private DefaultMQProducerProxyFactory(Boolean useProxy) {
         this.useProxy = useProxy;
@@ -53,7 +54,6 @@ public class DefaultMQProducerProxyFactory implements MethodInterceptor {
         if (!useProxy) {
             return target;
         }
-        traceContext = new RocketmqTraceContext();
 
         //加载需要创建子类的类
         Enhancer enhancer = new Enhancer();

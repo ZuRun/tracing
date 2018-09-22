@@ -2,6 +2,9 @@ package cn.zull.tracing.core;
 
 import cn.zull.tracing.core.dto.TraceDTO;
 
+import javax.validation.constraints.NotNull;
+import java.util.function.Consumer;
+
 /**
  * @author zurun
  * @date 2018/9/17 09:25:01
@@ -21,9 +24,9 @@ public interface TraceContext {
      * 2. controller层     : new一个dto并添加到threadLocal
      * 3. mq消费者         : 获取message中properties属性,转为dto并添加到threadLocal
      *
-     * @param traceDTO
+     * @param traceDTOConsumer
      */
-    void product(TraceDTO traceDTO);
+    void product(@NotNull Consumer<TraceDTO> traceDTOConsumer);
 
     /**
      * 1. dubbo         : 获取threadLocal中dto并添加到RpcContext中

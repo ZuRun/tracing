@@ -11,11 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class RocketmqTraceContext extends AbstractMqTraceContext {
 
-    @Override
-    public void product(TraceDTO traceDTO) {
-        super.product(traceDTO);
-    }
-
     /**
      * mq生产者,调用消费方法
      *

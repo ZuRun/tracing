@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
+import java.util.function.Consumer;
 
 /**
  * @author zurun
@@ -25,7 +26,9 @@ public abstract class AbstractTraceContext implements TraceContext {
     }
 
     @Override
-    public void product(@NotNull TraceDTO traceDTO) {
+    public void product(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
+        TraceDTO traceDTO = new TraceDTO();
+        traceDTOConsumer.accept(traceDTO);
         context.set(traceDTO);
         print();
     }
