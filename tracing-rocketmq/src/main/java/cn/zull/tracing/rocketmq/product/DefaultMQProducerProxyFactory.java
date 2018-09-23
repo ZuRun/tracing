@@ -5,11 +5,9 @@ import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -18,37 +16,46 @@ import java.util.Collection;
  * @author zurun
  * @date 2018/9/20 00:06:35
  */
-@Component
 public class DefaultMQProducerProxyFactory implements MethodInterceptor {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     /**
      * 是否使用代理
      */
     private final Boolean useProxy;
-    private final Boolean DefaultUseProxy = true;
+    private static final Boolean DEFAULT_USE_PROXY = false;
+    private final RocketmqTraceContext traceContext;
+    private final DefaultMQProducer defaultMQProducer;
 
-    @Autowired
-    private RocketmqTraceContext traceContext;
+    {
+        this.traceContext = new RocketmqTraceContext();
+    }
 
     private DefaultMQProducerProxyFactory(Boolean useProxy) {
         this.useProxy = useProxy;
+        this.defaultMQProducer = (DefaultMQProducer) createObj(new DefaultMQProducer());
     }
 
-    private DefaultMQProducerProxyFactory() {
-        this.useProxy = DefaultUseProxy;
+    private volatile static DefaultMQProducerProxyFactory factory;
+
+    public static final DefaultMQProducer getSingleton() {
+        return getSingleton(DEFAULT_USE_PROXY);
     }
 
     /**
-     * 实例化
-     *
      * @param useProxy 是否使用代理
      * @return
      */
-    public static DefaultMQProducer instantiation(Boolean useProxy) {
-
-        return (DefaultMQProducer) new DefaultMQProducerProxyFactory(useProxy).
-                createObj(new DefaultMQProducer());
+    public static final DefaultMQProducer getSingleton(Boolean useProxy) {
+        if (factory == null) {
+            synchronized (DefaultMQProducerProxyFactory.class) {
+                if (factory == null) {
+                    factory = new DefaultMQProducerProxyFactory(useProxy);
+                }
+            }
+        }
+        return factory.defaultMQProducer;
     }
+
 
     public Object createObj(DefaultMQProducer target) {
         if (!useProxy) {

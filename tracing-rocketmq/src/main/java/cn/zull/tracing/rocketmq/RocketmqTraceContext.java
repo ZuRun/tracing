@@ -4,6 +4,8 @@ import cn.zull.tracing.core.dto.TraceDTO;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author zurun
  * @date 2018/9/20 10:20:58
@@ -23,4 +25,14 @@ public class RocketmqTraceContext extends AbstractMqTraceContext {
         message.putUserProperty("spanId", traceDTO.getSpanId());
         return traceDTO;
     }
+
+    @Override
+    public void product(@NotNull Message message) {
+        super.product(traceDTO -> {
+            traceDTO.setTraceId(message.getUserProperty("traceId"));
+            traceDTO.setSpanId(message.getUserProperty("spanId"));
+        });
+    }
+
+
 }
