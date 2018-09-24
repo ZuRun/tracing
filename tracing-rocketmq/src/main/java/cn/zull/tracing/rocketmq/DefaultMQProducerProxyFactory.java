@@ -1,6 +1,5 @@
-package cn.zull.tracing.rocketmq.product;
+package cn.zull.tracing.rocketmq;
 
-import cn.zull.tracing.rocketmq.RocketmqTraceContext;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.slf4j.Logger;
