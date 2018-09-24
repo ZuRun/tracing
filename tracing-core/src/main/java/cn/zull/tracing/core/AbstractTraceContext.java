@@ -11,12 +11,6 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractTraceContext implements TraceContext {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final ThreadLocal<TraceDTO> context = ThreadLocal.withInitial(TraceDTO::getInstance);
-
-    protected void print() {
-        logger.info("traceDTO:{}", getContext());
-    }
-
     @Override
     public TraceDTO getThreadLocalTraceDto() {
         return getContext();
@@ -35,18 +29,14 @@ public abstract class AbstractTraceContext implements TraceContext {
 //        return getTraceDto();
 //    }
 
-    public void setContext(TraceDTO traceDTO) {
-        context.set(traceDTO);
-        logger.info("update traceDTO:{}", getContext());
-    }
-
-    public TraceDTO getContext() {
-        return context.get();
-    }
-
-    public TraceDTO getContextAndSpanIdPlusOne() {
-        TraceDTO traceDTO = context.get().spanIdPlusOne();
+    protected TraceDTO getContextAndSpanIdPlusOne() {
+        TraceDTO traceDTO = getContext().spanIdPlusOne();
         logger.info("get traceDTO:{}", getContext());
         return traceDTO;
+    }
+
+    protected void setContext(TraceDTO traceDTO) {
+        TraceThreadLocal.setContext(traceDTO);
+        logger.info("update traceDTO:{}", getContext());
     }
 }

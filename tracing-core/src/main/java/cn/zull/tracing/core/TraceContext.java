@@ -19,6 +19,11 @@ public interface TraceContext {
      */
     TraceDTO getThreadLocalTraceDto();
 
+    default TraceDTO getContext() {
+        return TraceThreadLocal.getContext();
+    }
+
+
     /**
      * 将dto新增到threadLocal入口(生产方/线程入口)
      * 1. dubbo生产者      : 通过RpcContext获取dto并添加到threadLocal
@@ -37,8 +42,7 @@ public interface TraceContext {
      * @return dto
      */
 //    TraceDTO product();
-
-    default  <R> R collectLog(Function<TraceInfo, R> function) {
+    default <R> R collectLog(Function<TraceInfo, R> function) {
         TraceInfo traceInfo = new TraceInfo();
         traceInfo.setStm(DateUtils.getNowDateTimeString());
         try {
