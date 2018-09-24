@@ -1,9 +1,12 @@
 package cn.zull.tracing.core;
 
-import cn.zull.tracing.core.dto.TraceDTO;
+import cn.zull.tracing.core.model.TraceDTO;
+import cn.zull.tracing.core.model.TraceInfo;
+import cn.zull.tracing.core.utils.DateUtils;
 
 import javax.validation.constraints.NotNull;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author zurun
@@ -36,4 +39,15 @@ public interface TraceContext {
      * @return dto
      */
     TraceDTO consumer();
+
+    default  <R> R collectLog(Function<TraceInfo, R> function) {
+        TraceInfo traceInfo = new TraceInfo();
+        traceInfo.setStm(DateUtils.getNowDateTimeString());
+        try {
+            return function.apply(traceInfo);
+        } finally {
+            traceInfo.setEtm(DateUtils.getNowDateTimeString());
+            System.out.println(traceInfo.toString());
+        }
+    }
 }

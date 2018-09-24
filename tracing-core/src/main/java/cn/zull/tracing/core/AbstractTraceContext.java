@@ -1,6 +1,6 @@
 package cn.zull.tracing.core;
 
-import cn.zull.tracing.core.dto.TraceDTO;
+import cn.zull.tracing.core.model.TraceDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public abstract class AbstractTraceContext implements TraceContext {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final ThreadLocal<TraceDTO> context = ThreadLocal.withInitial(TraceDTO::new);
+    private static final ThreadLocal<TraceDTO> context = ThreadLocal.withInitial(TraceDTO::getInstance);
 
     protected void print() {
         logger.info("traceDTO:{}", getContext());
@@ -27,7 +27,7 @@ public abstract class AbstractTraceContext implements TraceContext {
 
     @Override
     public void product(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
-        TraceDTO traceDTO = new TraceDTO();
+        TraceDTO traceDTO = TraceDTO.getInstance();
         traceDTOConsumer.accept(traceDTO);
         setContext(traceDTO);
         print();

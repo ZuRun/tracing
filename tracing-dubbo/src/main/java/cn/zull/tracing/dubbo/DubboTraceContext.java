@@ -1,7 +1,7 @@
 package cn.zull.tracing.dubbo;
 
 import cn.zull.tracing.core.AbstractTraceContext;
-import cn.zull.tracing.core.dto.TraceDTO;
+import cn.zull.tracing.core.model.TraceDTO;
 import com.alibaba.dubbo.rpc.RpcContext;
 import org.springframework.stereotype.Component;
 
@@ -64,7 +64,7 @@ public class DubboTraceContext extends AbstractTraceContext implements RpcTraceC
     }
 
     protected TraceDTO map2TraceDto(Map<String, String> map) {
-        TraceDTO traceDTO = new TraceDTO();
+        TraceDTO traceDTO = TraceDTO.getInstance();
         traceDTO.setTraceId(map.get("traceId"));
         traceDTO.setSpanId(map.get("spanId"));
         return traceDTO;

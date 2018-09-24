@@ -1,7 +1,7 @@
 package cn.zull.tracing.rocketmq;
 
 import cn.zull.tracing.core.TraceContext;
-import cn.zull.tracing.core.dto.TraceDTO;
+import cn.zull.tracing.core.model.TraceDTO;
 import org.apache.rocketmq.common.message.Message;
 
 import javax.validation.constraints.NotNull;

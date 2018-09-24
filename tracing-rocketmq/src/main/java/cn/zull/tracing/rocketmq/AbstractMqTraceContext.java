@@ -1,7 +1,7 @@
 package cn.zull.tracing.rocketmq;
 
 import cn.zull.tracing.core.AbstractTraceContext;
-import cn.zull.tracing.core.dto.TraceDTO;
+import cn.zull.tracing.core.model.TraceDTO;
 
 import java.util.Optional;
 
