@@ -4,9 +4,6 @@ import cn.zull.tracing.core.model.TraceDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.constraints.NotNull;
-import java.util.function.Consumer;
-
 /**
  * @author zurun
  * @date 2018/9/17 09:49:14
@@ -21,28 +18,35 @@ public abstract class AbstractTraceContext implements TraceContext {
     }
 
     @Override
-    public TraceDTO getTraceDto() {
+    public TraceDTO getThreadLocalTraceDto() {
         return getContext();
     }
 
-    @Override
-    public void product(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
-        TraceDTO traceDTO = TraceDTO.getInstance();
-        traceDTOConsumer.accept(traceDTO);
-        setContext(traceDTO);
-        print();
-    }
-
-    @Override
-    public TraceDTO consumer() {
-        return getTraceDto();
-    }
+//    @Override
+//    public void product(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
+//        TraceDTO traceDTO = TraceDTO.getInstance();
+//        traceDTOConsumer.accept(traceDTO);
+//        setContext(traceDTO);
+//        print();
+//    }
+//
+//    @Override
+//    public TraceDTO consumer() {
+//        return getTraceDto();
+//    }
 
     public void setContext(TraceDTO traceDTO) {
         context.set(traceDTO);
+        logger.info("update traceDTO:{}", getContext());
     }
 
     public TraceDTO getContext() {
         return context.get();
+    }
+
+    public TraceDTO getContextAndSpanIdPlusOne() {
+        TraceDTO traceDTO = context.get().spanIdPlusOne();
+        logger.info("get traceDTO:{}", getContext());
+        return traceDTO;
     }
 }

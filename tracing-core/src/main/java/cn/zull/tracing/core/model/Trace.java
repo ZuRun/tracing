@@ -14,13 +14,13 @@ public interface Trace {
      *
      * @return
      */
-    default void spanIdPlusOne(String spanId) {
+    default String spanIdPlusOne(String spanId) {
         if (StringUtils.isEmpty(spanId)) {
             spanId = DEFAULT_SPAN_ID;
         } else {
             spanId = plusOne(spanId);
         }
-        this.setSpanId(spanId);
+        return spanId;
     }
 
 
@@ -29,13 +29,13 @@ public interface Trace {
      *
      * @return
      */
-    default void spanIdAddLevel(String spanId) {
+    default String spanIdAddLevel(String spanId) {
         if (StringUtils.isEmpty(spanId)) {
             spanId = DEFAULT_SPAN_ID;
         } else {
             spanId = spanId + ".1";
         }
-        this.setSpanId(spanId);
+        return spanId;
     }
 
 
@@ -45,7 +45,4 @@ public interface Trace {
     }
 
 
-    String getSpanId();
-
-    void setSpanId(String spanId);
 }

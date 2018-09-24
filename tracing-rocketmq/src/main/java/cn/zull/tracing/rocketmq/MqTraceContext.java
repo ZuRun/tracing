@@ -5,6 +5,7 @@ import cn.zull.tracing.core.model.TraceDTO;
 import org.apache.rocketmq.common.message.Message;
 
 import javax.validation.constraints.NotNull;
+import java.util.function.Consumer;
 
 /**
  * @author zurun
@@ -17,7 +18,8 @@ public interface MqTraceContext extends TraceContext {
      * @param message
      * @return
      */
-    TraceDTO consumer(Message message);
+    TraceDTO product(Message message);
 
-    void product(@NotNull Message message);
+    void consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer, Message message);
+
 }

@@ -98,7 +98,7 @@ public class DefaultMQProducerProxyFactory implements MethodInterceptor {
     private void trace(Message message) {
         logger.info("mq生产:");
 
-        traceContext.consumer(message);
+        traceContext.product(message);
 
     }
 }

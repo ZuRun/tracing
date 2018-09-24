@@ -21,15 +21,15 @@ import java.util.function.Consumer;
 public class RestTraceContextImpl extends AbstractTraceContext implements RestTraceContext {
 
     @Override
-    public void product(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
+    public void consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
         TraceDTO traceDTO = getRestTraceDto();
         traceDTOConsumer.accept(traceDTO);
         setContext(traceDTO);
     }
 
     @Override
-    public TraceDTO consumer(HttpHeaders httpHeaders) {
-        TraceDTO traceDTO = super.getContext();
+    public TraceDTO product(HttpHeaders httpHeaders) {
+        TraceDTO traceDTO = super.getContextAndSpanIdPlusOne();
         httpHeaders.add("tracing", traceDTO.toString());
         return traceDTO;
     }
@@ -40,7 +40,7 @@ public class RestTraceContextImpl extends AbstractTraceContext implements RestTr
                 .map(ServletWebRequest::new)
                 .map(servletWebRequest -> servletWebRequest.getHeader("tracing"))
                 .filter(str -> !StringUtils.isEmpty(str))
-                .map(str -> JSON.parseObject(str, TraceDTO.class))
+                .map(str -> JSON.parseObject(str, TraceDTO.class).spanIdAddLevel())
                 .orElseGet(TraceDTO::getInstance);
     }
 }

@@ -1,10 +1,12 @@
 package cn.zull.tracing.rocketmq;
 
 import cn.zull.tracing.core.model.TraceDTO;
+import com.alibaba.fastjson.JSON;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
+import java.util.function.Consumer;
 
 /**
  * @author zurun
@@ -19,19 +21,26 @@ public class RocketmqTraceContext extends AbstractMqTraceContext {
      * @return
      */
     @Override
-    public TraceDTO consumer(Message message) {
-        TraceDTO traceDTO = getTraceDto();
-        message.putUserProperty("traceId", traceDTO.getTraceId());
-        message.putUserProperty("spanId", traceDTO.getSpanId());
+    public TraceDTO product(Message message) {
+        TraceDTO traceDTO = getContextAndSpanIdPlusOne();
+        message.putUserProperty("tracing", traceDTO.toString());
+//        message.putUserProperty("traceId", traceDTO.getTraceId());
+//        message.putUserProperty("spanId", traceDTO.getSpanId());
+//        message.putUserProperty("ctm", traceDTO.getCtm());
+//        message.putUserProperty("properties", traceDTO.propertiesString());
         return traceDTO;
     }
 
+    /**
+     * mq消费者
+     *
+     * @param message
+     */
     @Override
-    public void product(@NotNull Message message) {
-        super.product(traceDTO -> {
-            traceDTO.setTraceId(message.getUserProperty("traceId"));
-            traceDTO.setSpanId(message.getUserProperty("spanId"));
-        });
+    public void consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer, Message message) {
+        TraceDTO traceDTO = JSON.parseObject(message.getUserProperty("tracing"), TraceDTO.class).spanIdAddLevel();
+        traceDTOConsumer.accept(traceDTO);
+        super.setContext(traceDTO);
     }
 
 

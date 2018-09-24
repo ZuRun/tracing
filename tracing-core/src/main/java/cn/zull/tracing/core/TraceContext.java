@@ -4,8 +4,6 @@ import cn.zull.tracing.core.model.TraceDTO;
 import cn.zull.tracing.core.model.TraceInfo;
 import cn.zull.tracing.core.utils.DateUtils;
 
-import javax.validation.constraints.NotNull;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -15,11 +13,11 @@ import java.util.function.Function;
 public interface TraceContext {
 
     /**
-     * 获取traceDto
+     * 从threadLocal中获取traceDto
      *
      * @return
      */
-    TraceDTO getTraceDto();
+    TraceDTO getThreadLocalTraceDto();
 
     /**
      * 将dto新增到threadLocal入口(生产方/线程入口)
@@ -29,7 +27,7 @@ public interface TraceContext {
      *
      * @param traceDTOConsumer
      */
-    void product(@NotNull Consumer<TraceDTO> traceDTOConsumer);
+//    void consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer);
 
     /**
      * 1. dubbo消费者    : 获取threadLocal中dto并添加到RpcContext中
@@ -38,7 +36,7 @@ public interface TraceContext {
      *
      * @return dto
      */
-    TraceDTO consumer();
+//    TraceDTO product();
 
     default  <R> R collectLog(Function<TraceInfo, R> function) {
         TraceInfo traceInfo = new TraceInfo();

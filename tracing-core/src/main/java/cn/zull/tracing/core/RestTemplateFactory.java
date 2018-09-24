@@ -58,7 +58,7 @@ public class RestTemplateFactory<T extends RestTemplate> implements MethodInterc
             ClientHttpRequest clientHttpRequest = (ClientHttpRequest) methodProxy.invokeSuper(target, args);
             logger.info(method.getName());
 
-            traceContext.consumer(clientHttpRequest.getHeaders());
+            traceContext.product(clientHttpRequest.getHeaders());
 
             return clientHttpRequest;
         }

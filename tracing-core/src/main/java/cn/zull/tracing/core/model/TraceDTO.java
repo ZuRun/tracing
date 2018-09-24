@@ -3,6 +3,7 @@ package cn.zull.tracing.core.model;
 import cn.zull.tracing.core.utils.UUIDUtils;
 import com.alibaba.fastjson.JSON;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * º
@@ -10,6 +11,7 @@ import lombok.Data;
  * @author zurun
  * @date 2018/9/17 23:51:10
  */
+@Accessors(chain = true)
 @Data
 public class TraceDTO<T> implements Trace {
     private String traceId;
@@ -17,12 +19,15 @@ public class TraceDTO<T> implements Trace {
     /**
      * 链路创建时间(时间戳,ms)
      */
-    private Long ctm;
+    private String ctm;
 
     private T properties;
 
 
-    private TraceDTO(String traceId) {
+    private TraceDTO(String traceId, String spanId, String ctm) {
+        this.traceId = traceId;
+        this.spanId = spanId;
+        this.ctm = ctm;
     }
 
     public static TraceDTO getInstance() {
@@ -31,8 +36,19 @@ public class TraceDTO<T> implements Trace {
 
 
     public static TraceDTO getInstance(String traceId, String spanId) {
-        TraceDTO traceDTO = new TraceDTO(traceId);
+        TraceDTO traceDTO = new TraceDTO(traceId, spanId, String.valueOf(System.currentTimeMillis()));
         return traceDTO;
+    }
+
+
+    public TraceDTO spanIdPlusOne() {
+        this.spanId = this.spanIdPlusOne(this.getSpanId());
+        return this;
+    }
+
+    public TraceDTO spanIdAddLevel() {
+        this.spanId = this.spanIdAddLevel(this.getSpanId());
+        return this;
     }
 
     @Override

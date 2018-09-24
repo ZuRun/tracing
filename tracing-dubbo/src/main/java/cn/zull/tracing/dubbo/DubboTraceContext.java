@@ -3,12 +3,12 @@ package cn.zull.tracing.dubbo;
 import cn.zull.tracing.core.AbstractTraceContext;
 import cn.zull.tracing.core.model.TraceDTO;
 import com.alibaba.dubbo.rpc.RpcContext;
+import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -19,21 +19,15 @@ import java.util.function.Consumer;
 public class DubboTraceContext extends AbstractTraceContext implements RpcTraceContext {
 
     @Override
-    public TraceDTO getTraceDto() {
-        return Optional.ofNullable(super.getTraceDto())
-                .orElseGet(this::getTraceDTOByRpcContext);
-    }
-
-    @Override
-    public void product(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
-        TraceDTO traceDTO = getTraceDTOByRpcContext();
+    public void consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
+        TraceDTO traceDTO = getTraceDTOByRpcContext().spanIdAddLevel();
         traceDTOConsumer.accept(traceDTO);
         setContext(traceDTO);
     }
 
     @Override
-    public TraceDTO consumer() {
-        TraceDTO traceDTO = super.getTraceDto();
+    public TraceDTO product() {
+        TraceDTO traceDTO = super.getContextAndSpanIdPlusOne();
         if (traceDTO == null) {
             return null;
         }
@@ -48,7 +42,7 @@ public class DubboTraceContext extends AbstractTraceContext implements RpcTraceC
      * @return
      */
     private TraceDTO getTraceDTOByRpcContext() {
-        Map map = RpcContext.getContext().getAttachments();
+        Map<String, String> map = RpcContext.getContext().getAttachments();
         TraceDTO traceDTO = map2TraceDto(map);
         if (traceDTO != null) {
             setContext(traceDTO);
@@ -60,6 +54,8 @@ public class DubboTraceContext extends AbstractTraceContext implements RpcTraceC
         Map<String, String> map = new HashMap(3);
         map.put("traceId", traceDTO.getTraceId());
         map.put("spanId", traceDTO.getSpanId());
+        map.put("ctm", traceDTO.getCtm());
+        map.put("properties", JSON.toJSONString(traceDTO.getProperties()));
         return map;
     }
 
@@ -67,6 +63,8 @@ public class DubboTraceContext extends AbstractTraceContext implements RpcTraceC
         TraceDTO traceDTO = TraceDTO.getInstance();
         traceDTO.setTraceId(map.get("traceId"));
         traceDTO.setSpanId(map.get("spanId"));
+        traceDTO.setCtm(map.get("ctm"));
+        traceDTO.setProperties(JSON.parseObject(map.get("properties")));
         return traceDTO;
     }
 
