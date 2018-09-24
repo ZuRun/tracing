@@ -29,9 +29,7 @@ public class RestTraceContextImpl extends AbstractTraceContext implements RestTr
 
     @Override
     public TraceDTO product(HttpHeaders httpHeaders) {
-        TraceDTO traceDTO = super.getContextAndSpanIdPlusOne();
-        httpHeaders.add("tracing", traceDTO.toString());
-        return traceDTO;
+        return super.getContextAndSpanIdPlusOne(traceDTO -> httpHeaders.add("tracing", traceDTO.toString()));
     }
 
     private TraceDTO getRestTraceDto() {

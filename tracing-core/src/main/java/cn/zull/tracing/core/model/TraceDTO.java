@@ -23,6 +23,8 @@ public class TraceDTO<T> implements Trace {
 
     private T properties;
 
+    public TraceDTO() {
+    }
 
     private TraceDTO(String traceId, String spanId, String ctm) {
         this.traceId = traceId;

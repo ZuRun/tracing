@@ -27,12 +27,7 @@ public class DubboTraceContext extends AbstractTraceContext implements RpcTraceC
 
     @Override
     public TraceDTO product() {
-        TraceDTO traceDTO = super.getContextAndSpanIdPlusOne();
-        if (traceDTO == null) {
-            return null;
-        }
-        RpcContext.getContext().setAttachments(traceDto2Map(traceDTO));
-        return traceDTO;
+        return super.getContextAndSpanIdPlusOne(traceDTO -> RpcContext.getContext().setAttachments(traceDto2Map(traceDTO)));
     }
 
 
@@ -43,11 +38,7 @@ public class DubboTraceContext extends AbstractTraceContext implements RpcTraceC
      */
     private TraceDTO getTraceDTOByRpcContext() {
         Map<String, String> map = RpcContext.getContext().getAttachments();
-        TraceDTO traceDTO = map2TraceDto(map);
-        if (traceDTO != null) {
-            setContext(traceDTO);
-        }
-        return getContext();
+        return map2TraceDto(map);
     }
 
     protected Map<String, String> traceDto2Map(TraceDTO traceDTO) {

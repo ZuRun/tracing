@@ -4,6 +4,8 @@ import cn.zull.tracing.core.model.TraceDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.function.Consumer;
+
 /**
  * @author zurun
  * @date 2018/9/17 09:49:14
@@ -29,9 +31,11 @@ public abstract class AbstractTraceContext implements TraceContext {
 //        return getTraceDto();
 //    }
 
-    protected TraceDTO getContextAndSpanIdPlusOne() {
+    protected TraceDTO getContextAndSpanIdPlusOne(Consumer<TraceDTO> consumer) {
         TraceDTO traceDTO = getContext().spanIdPlusOne();
-        logger.info("get traceDTO:{}", getContext());
+        consumer.accept(traceDTO);
+        setContext(traceDTO);
+        logger.info("getAndSet traceDTO:{}", getContext());
         return traceDTO;
     }
 

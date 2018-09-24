@@ -22,13 +22,12 @@ public class RocketmqTraceContext extends AbstractMqTraceContext {
      */
     @Override
     public TraceDTO product(Message message) {
-        TraceDTO traceDTO = getContextAndSpanIdPlusOne();
-        message.putUserProperty("tracing", traceDTO.toString());
+        return getContextAndSpanIdPlusOne(traceDTO -> message.putUserProperty("tracing", traceDTO.toString()));
+
 //        message.putUserProperty("traceId", traceDTO.getTraceId());
 //        message.putUserProperty("spanId", traceDTO.getSpanId());
 //        message.putUserProperty("ctm", traceDTO.getCtm());
 //        message.putUserProperty("properties", traceDTO.propertiesString());
-        return traceDTO;
     }
 
     /**
