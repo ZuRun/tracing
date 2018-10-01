@@ -17,11 +17,16 @@
             <artifactId>tracing-core</artifactId>
             <version>1.0.5-SNAPSHOT</version>
         </dependency>
-        <!--dubbo 详见 https://github.com/apache/incubator-dubbo-spring-boot-project/blob/master/README_CN.md-->
+        <!--&lt;!&ndash;dubbo 详见 https://github.com/apache/incubator-dubbo-spring-boot-project/blob/master/README_CN.md&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>com.alibaba.boot</groupId>-->
+            <!--<artifactId>dubbo-spring-boot-starter</artifactId>-->
+            <!--<version>0.2.0</version>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>com.alibaba.boot</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
-            <version>0.2.0</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.6.3</version>
         </dependency>
     </dependencies>
 </project>
