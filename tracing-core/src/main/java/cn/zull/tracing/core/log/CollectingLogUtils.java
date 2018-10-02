@@ -1,10 +1,13 @@
 package cn.zull.tracing.core.log;
 
 import cn.zull.tracing.core.configuration.TracingProperties;
-import cn.zull.tracing.core.exception.TracingException;
 import cn.zull.tracing.core.dto.TraceDTO;
+import cn.zull.tracing.core.exception.TracingException;
+import cn.zull.tracing.core.exception.TracingInnerException;
 import cn.zull.tracing.core.model.TraceLog;
+import cn.zull.tracing.core.model.TraceStatusEnum;
 import cn.zull.tracing.core.utils.SpringApplicationContext;
+import cn.zull.tracing.core.utils.TracingGlobal;
 import cn.zull.tracing.core.utils.TracingLogEntityFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +24,7 @@ import java.util.function.Function;
 public class CollectingLogUtils {
     private static final Logger logger = LoggerFactory.getLogger(CollectingLogUtils.class);
 
-    @Autowired
+    @Autowired(required = false)
     TracingLogHandler tracingLogHandler;
 
     @Autowired
@@ -33,15 +36,32 @@ public class CollectingLogUtils {
     private static CollectingLogUtils collectingLogs;
 
     public <R> R collectionLogs(TraceDTO traceDTO, Function<TraceLog, R> function) {
-        TraceLog traceLog = tracingLogEntityFactory.createObject(traceDTO);
+        TraceLog traceLog = tracingLogEntityFactory.createObject(traceDTO)
+                .setEndPoint(TracingGlobal.getInstance().getHostInfo().getEndPoint());
         try {
-            return function.apply(traceLog);
+            R r = function.apply(traceLog);
+            if (r instanceof RuntimeException) {
+                RuntimeException e = (RuntimeException) r;
+                traceLog.setStatus(TraceStatusEnum.FAIL);
+                throw e;
+            } else if (r instanceof Exception) {
+                Exception e = (Exception) r;
+                traceLog.setStatus(TraceStatusEnum.FAIL);
+                throw new TracingInnerException(e);
+            } else if (r instanceof Throwable) {
+                Throwable throwable = (Throwable) r;
+                traceLog.setStatus(TraceStatusEnum.FAIL);
+                throw new TracingInnerException(throwable);
+            }
+            return r;
         } finally {
             try {
                 traceLog.stop();
                 logger.info(traceLog.toString());
-                if (tracingProperties.getEnable()) {
+                if (tracingProperties.getEnable() && tracingLogHandler != null) {
                     tracingLogHandler.handler(traceLog);
+                } else {
+                    logger.info("不收集日志");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

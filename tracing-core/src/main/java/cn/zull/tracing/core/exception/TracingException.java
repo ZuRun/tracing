@@ -8,4 +8,8 @@ public class TracingException extends RuntimeException {
     public TracingException(String messsage) {
         super(messsage);
     }
+
+    public TracingException(Throwable cause) {
+        super(cause);
+    }
 }

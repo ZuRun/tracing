@@ -28,4 +28,6 @@ public interface RestTraceContext extends TraceContext {
      * @return
      */
     TraceDTO product(HttpHeaders httpHeaders);
+
+    TraceDTO provider();
 }

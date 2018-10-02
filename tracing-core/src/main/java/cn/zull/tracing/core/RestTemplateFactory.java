@@ -1,5 +1,7 @@
 package cn.zull.tracing.core;
 
+import cn.zull.tracing.core.dto.TraceDTO;
+import cn.zull.tracing.core.log.CollectingLogUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cglib.proxy.Enhancer;
@@ -9,6 +11,7 @@ import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Method;
+import java.net.URI;
 
 /**
  * @author zurun
@@ -61,6 +64,19 @@ public class RestTemplateFactory<T extends RestTemplate> implements MethodInterc
             traceContext.product(clientHttpRequest.getHeaders());
 
             return clientHttpRequest;
+        } else if ("doExecute".equals(method.getName())) {
+            URI uri = (URI) args[0];
+            TraceDTO traceDTO = traceContext.provider();
+            return CollectingLogUtils.collectionLog(traceDTO, traceLog -> {
+                traceLog.setTraceType("RestTemplate")
+                        .setUrl(uri.toString());
+                try {
+                    return methodProxy.invokeSuper(target, args);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                    return throwable;
+                }
+            });
         }
         return methodProxy.invokeSuper(target, args);
     }

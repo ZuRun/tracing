@@ -4,7 +4,6 @@ package cn.zull.tracing.dubbo.filter;
 import cn.zull.tracing.core.dto.TraceDTO;
 import cn.zull.tracing.core.log.CollectingLogUtils;
 import cn.zull.tracing.core.utils.SpringApplicationContext;
-import cn.zull.tracing.core.utils.TracingGlobal;
 import cn.zull.tracing.dubbo.DubboTraceContext;
 import cn.zull.tracing.dubbo.RpcTraceContext;
 import com.alibaba.dubbo.common.Constants;
@@ -36,16 +35,14 @@ public class DubboFilter implements Filter {
             TraceDTO traceDTO = getTraceContext().product();
             return CollectingLogUtils.collectionLog(traceDTO, traceLog -> {
                 traceLog.setTraceType("dubbo-consumer")
-                        .setUrl(invoker.getUrl().toString())
-                        .setEndPoint(TracingGlobal.getInstance().getHostInfo().getEndPoint());
+                        .setUrl(invoker.getUrl().toString());
                 return invoker.invoke(invocation);
             });
         } else if (Constants.PROVIDER_SIDE.equals(sideVal)) {
             TraceDTO traceDTO = getTraceContext().consumer(TraceDTO::getTraceId);
             return CollectingLogUtils.collectionLog(traceDTO, traceLog -> {
                 traceLog.setTraceType("dubbo-provider")
-                        .setUrl(invoker.getUrl().toString())
-                        .setEndPoint(TracingGlobal.getInstance().getHostInfo().getEndPoint());
+                        .setUrl(invoker.getUrl().toString());
                 return invoker.invoke(invocation);
             });
         }
