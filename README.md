@@ -12,7 +12,7 @@
 1. 把父模块更新到指定版本号，然后更新子模块，与父模块有相同的版本号
 
     ```
-    mvn versions:set -DnewVersion=1.0.2-SNAPSHOT
+    mvn versions:set -DnewVersion=1.0.6-SNAPSHOT
     mvn -N versions:update-child-modules  
     ```
 

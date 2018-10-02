@@ -1,6 +1,6 @@
 package cn.zull.tracing.dubbo.filter;
 
-import cn.zull.tracing.core.TraceContext;
+
 import cn.zull.tracing.core.utils.SpringApplicationContext;
 import cn.zull.tracing.dubbo.DubboTraceContext;
 import cn.zull.tracing.dubbo.RpcTraceContext;
@@ -9,7 +9,6 @@ import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.rpc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author zurun
@@ -19,8 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DubboFilter implements Filter {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    RpcTraceContext traceContext;
+    private volatile RpcTraceContext traceContext;
 
     public DubboFilter() {
         System.out.println("-------Dubbo Filter-------");
@@ -32,16 +30,26 @@ public class DubboFilter implements Filter {
         logger.info("dubbo filter");
         String sideVal = invoker.getUrl().getParameter(Constants.SIDE_KEY);
         if (Constants.CONSUMER_SIDE.equals(sideVal)) {
-            traceContext.consumer(traceDTO -> {
+            getTraceContext().product();
+        } else if (Constants.PROVIDER_SIDE.equals(sideVal)) {
+            getTraceContext().consumer(traceDTO -> {
 
             });
-        } else {
-            traceContext.product();
         }
         return invoker.invoke(invocation);
     }
 
-    private TraceContext getTraceContext(){
-        return  SpringApplicationContext.getBean(DubboTraceContext.class);
+    private RpcTraceContext getTraceContext() {
+        if (traceContext == null) {
+            synchronized (RpcTraceContext.class) {
+                if (traceContext == null) {
+                    traceContext = SpringApplicationContext.getBean(DubboTraceContext.class);
+                }
+                if (traceContext == null) {
+                    logger.error("RpcTraceContext is null");
+                }
+            }
+        }
+        return traceContext;
     }
 }
