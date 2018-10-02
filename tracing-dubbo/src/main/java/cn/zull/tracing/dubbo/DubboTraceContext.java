@@ -1,7 +1,7 @@
 package cn.zull.tracing.dubbo;
 
 import cn.zull.tracing.core.AbstractTraceContext;
-import cn.zull.tracing.core.model.TraceDTO;
+import cn.zull.tracing.core.dto.TraceDTO;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Component;

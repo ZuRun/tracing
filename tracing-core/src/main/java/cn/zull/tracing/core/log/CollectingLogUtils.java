@@ -1,8 +1,11 @@
 package cn.zull.tracing.core.log;
 
-import cn.zull.tracing.core.model.TraceDTO;
-import cn.zull.tracing.core.model.TraceInfo;
+import cn.zull.tracing.core.configuration.TracingProperties;
+import cn.zull.tracing.core.exception.TracingException;
+import cn.zull.tracing.core.dto.TraceDTO;
+import cn.zull.tracing.core.model.TraceLog;
 import cn.zull.tracing.core.utils.SpringApplicationContext;
+import cn.zull.tracing.core.utils.TracingLogEntityFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +24,33 @@ public class CollectingLogUtils {
     @Autowired
     TracingLogHandler tracingLogHandler;
 
+    @Autowired
+    TracingProperties tracingProperties;
+
+    @Autowired
+    TracingLogEntityFactory tracingLogEntityFactory;
+
     private static CollectingLogUtils collectingLogs;
 
-    public static <R> R collectionLog(TraceDTO traceDTO, Function<TraceInfo, R> function) {
-        TraceInfo traceInfo = new TraceInfo(traceDTO);
+    public <R> R collectionLogs(TraceDTO traceDTO, Function<TraceLog, R> function) {
+        TraceLog traceLog = tracingLogEntityFactory.createObject(traceDTO);
         try {
-            return function.apply(traceInfo);
+            return function.apply(traceLog);
         } finally {
-            traceInfo.stop();
-            logger.info(traceInfo.toString());
-            getBean().tracingLogHandler.handler(traceDTO);
+            try {
+                traceLog.stop();
+                logger.info(traceLog.toString());
+                if (tracingProperties.getEnable()) {
+                    tracingLogHandler.handler(traceLog);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    public static <R> R collectionLog(TraceDTO traceDTO, Function<TraceLog, R> function) {
+        return getBean().collectionLogs(traceDTO, function);
     }
 
     private static CollectingLogUtils getBean() {
@@ -42,7 +61,7 @@ public class CollectingLogUtils {
                 }
                 if (collectingLogs == null) {
                     logger.error("CollectingLogs is null");
-                    throw new RuntimeException("CollectingLogs is null");
+                    throw new TracingException("CollectingLogs is null");
                 }
             }
         }

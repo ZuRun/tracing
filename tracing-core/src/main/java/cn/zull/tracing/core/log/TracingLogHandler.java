@@ -1,6 +1,6 @@
 package cn.zull.tracing.core.log;
 
-import cn.zull.tracing.core.model.TraceDTO;
+import cn.zull.tracing.core.model.TraceLog;
 
 /**
  * @author zurun
@@ -11,7 +11,7 @@ public interface TracingLogHandler {
     /**
      * 处理日志
      *
-     * @param traceDTO
+     * @param traceLog
      */
-    void handler(TraceDTO traceDTO);
+    void handler(TraceLog traceLog);
 }

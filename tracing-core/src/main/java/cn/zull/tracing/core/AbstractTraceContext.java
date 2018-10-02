@@ -1,8 +1,10 @@
 package cn.zull.tracing.core;
 
-import cn.zull.tracing.core.model.TraceDTO;
+import cn.zull.tracing.core.configuration.TracingProperties;
+import cn.zull.tracing.core.dto.TraceDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.function.Consumer;
 
@@ -12,6 +14,9 @@ import java.util.function.Consumer;
  */
 public abstract class AbstractTraceContext implements TraceContext {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    protected TracingProperties tracingProperties;
 
     @Override
     public TraceDTO getThreadLocalTraceDto() {

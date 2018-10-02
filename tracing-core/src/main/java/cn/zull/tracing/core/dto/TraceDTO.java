@@ -1,9 +1,7 @@
-package cn.zull.tracing.core.model;
+package cn.zull.tracing.core.dto;
 
 import cn.zull.tracing.core.utils.UUIDUtils;
 import com.alibaba.fastjson.JSON;
-import lombok.Data;
-import lombok.experimental.Accessors;
 
 /**
  * º
@@ -11,9 +9,7 @@ import lombok.experimental.Accessors;
  * @author zurun
  * @date 2018/9/17 23:51:10
  */
-@Accessors(chain = true)
-@Data
-public class TraceDTO<T> implements Trace {
+public class TraceDTO<T> implements BaseTraceDTO {
     private String traceId;
     private String spanId;
     /**
@@ -58,6 +54,41 @@ public class TraceDTO<T> implements Trace {
         return JSON.toJSONString(this);
     }
 
+    public String getTraceId() {
+        return traceId;
+    }
+
+    public TraceDTO setTraceId(String traceId) {
+        this.traceId = traceId;
+        return this;
+    }
+
+    public String getSpanId() {
+        return spanId;
+    }
+
+    public TraceDTO setSpanId(String spanId) {
+        this.spanId = spanId;
+        return this;
+    }
+
+    public String getCtm() {
+        return ctm;
+    }
+
+    public TraceDTO setCtm(String ctm) {
+        this.ctm = ctm;
+        return this;
+    }
+
+    public T getProperties() {
+        return properties;
+    }
+
+    public TraceDTO setProperties(T properties) {
+        this.properties = properties;
+        return this;
+    }
 }
 
 

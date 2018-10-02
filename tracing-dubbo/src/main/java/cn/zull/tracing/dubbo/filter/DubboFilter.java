@@ -1,8 +1,10 @@
 package cn.zull.tracing.dubbo.filter;
 
 
+import cn.zull.tracing.core.dto.TraceDTO;
 import cn.zull.tracing.core.log.CollectingLogUtils;
 import cn.zull.tracing.core.utils.SpringApplicationContext;
+import cn.zull.tracing.core.utils.TracingGlobal;
 import cn.zull.tracing.dubbo.DubboTraceContext;
 import cn.zull.tracing.dubbo.RpcTraceContext;
 import com.alibaba.dubbo.common.Constants;
@@ -31,10 +33,21 @@ public class DubboFilter implements Filter {
         logger.info("dubbo filter");
         String sideVal = invoker.getUrl().getParameter(Constants.SIDE_KEY);
         if (Constants.CONSUMER_SIDE.equals(sideVal)) {
-            return CollectingLogUtils.collectionLog(getTraceContext().product(), traceInfo -> invoker.invoke(invocation));
+            TraceDTO traceDTO = getTraceContext().product();
+            return CollectingLogUtils.collectionLog(traceDTO, traceLog -> {
+                traceLog.setTraceType("dubbo-consumer")
+                        .setUrl(invoker.getUrl().toString())
+                        .setEndPoint(TracingGlobal.getInstance().getHostInfo().getEndPoint());
+                return invoker.invoke(invocation);
+            });
         } else if (Constants.PROVIDER_SIDE.equals(sideVal)) {
-            return CollectingLogUtils.collectionLog(getTraceContext().consumer(traceDTO -> {
-            }), traceInfo -> invoker.invoke(invocation));
+            TraceDTO traceDTO = getTraceContext().consumer(TraceDTO::getTraceId);
+            return CollectingLogUtils.collectionLog(traceDTO, traceLog -> {
+                traceLog.setTraceType("dubbo-provider")
+                        .setUrl(invoker.getUrl().toString())
+                        .setEndPoint(TracingGlobal.getInstance().getHostInfo().getEndPoint());
+                return invoker.invoke(invocation);
+            });
         }
         return invoker.invoke(invocation);
     }

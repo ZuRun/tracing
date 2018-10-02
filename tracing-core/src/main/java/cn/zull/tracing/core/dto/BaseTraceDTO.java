@@ -1,4 +1,4 @@
-package cn.zull.tracing.core.model;
+package cn.zull.tracing.core.dto;
 
 import org.springframework.util.StringUtils;
 
@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
  * @author zurun
  * @date 2018/9/24 21:14:22
  */
-public interface Trace {
+public interface BaseTraceDTO {
     String DEFAULT_SPAN_ID = "2.1";
 
     /**

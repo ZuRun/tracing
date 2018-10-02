@@ -1,7 +1,7 @@
 package cn.zull.tracing.dubbo;
 
 import cn.zull.tracing.core.TraceContext;
-import cn.zull.tracing.core.model.TraceDTO;
+import cn.zull.tracing.core.dto.TraceDTO;
 
 import javax.validation.constraints.NotNull;
 import java.util.function.Consumer;

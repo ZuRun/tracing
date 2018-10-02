@@ -1,6 +1,6 @@
 package cn.zull.tracing.core;
 
-import cn.zull.tracing.core.model.TraceDTO;
+import cn.zull.tracing.core.dto.TraceDTO;
 
 /**
  * @author zurun

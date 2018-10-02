@@ -1,6 +1,6 @@
 package cn.zull.tracing.core;
 
-import cn.zull.tracing.core.model.TraceDTO;
+import cn.zull.tracing.core.dto.TraceDTO;
 import com.alibaba.fastjson.JSON;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
