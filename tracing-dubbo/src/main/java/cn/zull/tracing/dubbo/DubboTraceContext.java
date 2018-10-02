@@ -19,10 +19,11 @@ import java.util.function.Consumer;
 public class DubboTraceContext extends AbstractTraceContext implements RpcTraceContext {
 
     @Override
-    public void consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
+    public TraceDTO consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
         TraceDTO traceDTO = getTraceDTOByRpcContext().spanIdAddLevel();
         traceDTOConsumer.accept(traceDTO);
         setContext(traceDTO);
+        return traceDTO;
     }
 
     @Override

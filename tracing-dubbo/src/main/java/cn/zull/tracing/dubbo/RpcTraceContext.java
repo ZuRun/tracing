@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  */
 public interface RpcTraceContext extends TraceContext {
 
-    void consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer);
+    TraceDTO consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer);
 
     /**
      * 调用远程rpc接口,将threadLocal中TraceDTO赋值给rpcContext

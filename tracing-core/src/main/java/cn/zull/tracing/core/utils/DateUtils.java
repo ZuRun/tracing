@@ -18,4 +18,12 @@ public class DateUtils {
     public static String getNowDateTimeString() {
         return formatter.format(new Date());
     }
+
+    public static String dateTimeFormat(Long timestamp) {
+        return formatter.format(new Date(timestamp));
+    }
+
+    public static String dateTimeFormat(Date date) {
+        return formatter.format(date);
+    }
 }

@@ -1,6 +1,7 @@
 package cn.zull.tracing.dubbo.filter;
 
 
+import cn.zull.tracing.core.log.CollectingLogUtils;
 import cn.zull.tracing.core.utils.SpringApplicationContext;
 import cn.zull.tracing.dubbo.DubboTraceContext;
 import cn.zull.tracing.dubbo.RpcTraceContext;
@@ -30,11 +31,10 @@ public class DubboFilter implements Filter {
         logger.info("dubbo filter");
         String sideVal = invoker.getUrl().getParameter(Constants.SIDE_KEY);
         if (Constants.CONSUMER_SIDE.equals(sideVal)) {
-            getTraceContext().product();
+            return CollectingLogUtils.collectionLog(getTraceContext().product(), traceInfo -> invoker.invoke(invocation));
         } else if (Constants.PROVIDER_SIDE.equals(sideVal)) {
-            getTraceContext().consumer(traceDTO -> {
-
-            });
+            return CollectingLogUtils.collectionLog(getTraceContext().consumer(traceDTO -> {
+            }), traceInfo -> invoker.invoke(invocation));
         }
         return invoker.invoke(invocation);
     }
