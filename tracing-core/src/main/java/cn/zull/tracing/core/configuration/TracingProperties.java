@@ -12,7 +12,7 @@ public class TracingProperties {
     @Value("${tracing.enable:true}")
     private Boolean enable ;
 
-    @Value("${tracing.entity.path:cn.zull.tracing.core.model.TraceInfo}")
+    @Value("${tracing.entity.path:}")
     private String entityPath ;
 
     @Value("${server.port:0}")

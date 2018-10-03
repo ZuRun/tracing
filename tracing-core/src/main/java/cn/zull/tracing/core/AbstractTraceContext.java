@@ -44,8 +44,9 @@ public abstract class AbstractTraceContext implements TraceContext {
         return traceDTO;
     }
 
-    protected void setContext(TraceDTO traceDTO) {
+    protected TraceDTO setContext(TraceDTO traceDTO) {
         TraceThreadLocal.setContext(traceDTO);
         logger.info("update traceDTO:{}", getContext());
+        return traceDTO;
     }
 }

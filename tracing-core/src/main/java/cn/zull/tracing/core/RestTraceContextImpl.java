@@ -21,10 +21,10 @@ import java.util.function.Consumer;
 public class RestTraceContextImpl extends AbstractTraceContext implements RestTraceContext {
 
     @Override
-    public void consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
+    public TraceDTO consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
         TraceDTO traceDTO = getRestTraceDto();
         traceDTOConsumer.accept(traceDTO);
-        setContext(traceDTO);
+        return setContext(traceDTO);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package cn.zull.tracing.rocketmq;
 
+import cn.zull.tracing.core.dto.TraceDTO;
+import cn.zull.tracing.core.log.CollectingLogUtils;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.slf4j.Logger;
@@ -80,9 +82,20 @@ public class DefaultMQProducerProxyFactory implements MethodInterceptor {
             Object object = args[0];
             if (object instanceof Message) {
                 Message message = (Message) object;
-                trace(message);
+                logger.info("mq生产");
+
+                return CollectingLogUtils.collectionLog(trace(message), traceLog -> {
+                    traceLog.setTraceType("rocketmq-provider");
+                    try {
+                        return methodProxy.invokeSuper(target, args);
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                        return throwable;
+                    }
+                });
             } else if (object instanceof Collection) {
                 Collection<Message> collection = (Collection) object;
+                logger.info("mq 群发message");
                 collection.forEach(this::trace);
             }
 
@@ -95,10 +108,7 @@ public class DefaultMQProducerProxyFactory implements MethodInterceptor {
      *
      * @param message
      */
-    private void trace(Message message) {
-        logger.info("mq生产:");
-
-        traceContext.product(message);
-
+    private TraceDTO trace(Message message) {
+        return traceContext.product(message);
     }
 }

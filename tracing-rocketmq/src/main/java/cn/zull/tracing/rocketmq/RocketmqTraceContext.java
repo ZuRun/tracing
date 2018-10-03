@@ -36,10 +36,10 @@ public class RocketmqTraceContext extends AbstractMqTraceContext {
      * @param message
      */
     @Override
-    public void consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer, Message message) {
+    public TraceDTO consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer, Message message) {
         TraceDTO traceDTO = JSON.parseObject(message.getUserProperty("tracing"), TraceDTO.class).spanIdAddLevel();
         traceDTOConsumer.accept(traceDTO);
-        super.setContext(traceDTO);
+        return super.setContext(traceDTO);
     }
 
 

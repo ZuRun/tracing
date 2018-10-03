@@ -1,9 +1,6 @@
 package cn.zull.tracing.core;
 
 import cn.zull.tracing.core.dto.TraceDTO;
-import cn.zull.tracing.core.model.DefaultTraceLog;
-
-import java.util.function.Function;
 
 /**
  * @author zurun
@@ -41,7 +38,4 @@ public interface TraceContext {
      * @return dto
      */
 //    TraceDTO product();
-    default <R> R collectionLog(Function<DefaultTraceLog, R> function) {
-        return null;
-    }
 }

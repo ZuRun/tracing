@@ -20,24 +20,25 @@ public class TracingLogEntityFactory {
     @Autowired
     TracingProperties tracingProperties;
 
-    private Class<TraceLog> clazz;
+    private Class<? extends TraceLog> clazz;
 
     public TraceLog createObject(TraceDTO traceDTO) {
         try {
-            return getClazz().newInstance();
+            return getClazz().newInstance().init(traceDTO);
         } catch (Exception e) {
+            e.printStackTrace();
             return new DefaultTraceLog().init(traceDTO);
         }
     }
 
-    private Class<TraceLog> getClazz() throws ClassNotFoundException {
+    private Class<? extends TraceLog> getClazz() throws ClassNotFoundException {
         if (clazz == null) {
             synchronized (TracingLogEntityFactory.class) {
                 if (clazz == null) {
                     String path = tracingProperties.getEntityPath();
                     if (StringUtils.isEmpty(path)) {
-                        tracingProperties.setEnable(false);
-                        throw new TracingException("请检查配置tracing.entity.path");
+                        clazz = DefaultTraceLog.class;
+                        return clazz;
                     }
                     Class<?> c = Class.forName(path);
                     if (c.isAssignableFrom(TraceLog.class)) {

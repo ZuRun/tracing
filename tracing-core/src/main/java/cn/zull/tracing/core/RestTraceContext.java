@@ -19,7 +19,7 @@ public interface RestTraceContext extends TraceContext {
      *
      * @param traceDTOConsumer
      */
-    void consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer);
+    TraceDTO consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer);
 
 
     /**

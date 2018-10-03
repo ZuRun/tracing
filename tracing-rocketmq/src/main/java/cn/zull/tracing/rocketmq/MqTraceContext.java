@@ -20,6 +20,6 @@ public interface MqTraceContext extends TraceContext {
      */
     TraceDTO product(Message message);
 
-    void consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer, Message message);
+    TraceDTO consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer, Message message);
 
 }
