@@ -17,6 +17,7 @@ import java.net.URI;
  * @author zurun
  * @date 2018/9/23 17:28:43
  */
+@Deprecated
 public class RestTemplateFactory<T extends RestTemplate> implements MethodInterceptor {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
