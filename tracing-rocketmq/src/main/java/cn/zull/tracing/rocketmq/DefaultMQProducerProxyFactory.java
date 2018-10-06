@@ -1,7 +1,7 @@
 package cn.zull.tracing.rocketmq;
 
 import cn.zull.tracing.core.dto.TraceDTO;
-import cn.zull.tracing.core.log.CollectingLogUtils;
+import cn.zull.tracing.core.after.TracingLogPostProcessingUtils;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.slf4j.Logger;
@@ -84,7 +84,7 @@ public class DefaultMQProducerProxyFactory implements MethodInterceptor {
                 Message message = (Message) object;
                 logger.info("mq生产");
 
-                return CollectingLogUtils.collectionLog(trace(message), traceLog -> {
+                return TracingLogPostProcessingUtils.collectionLog(trace(message), traceLog -> {
                     traceLog.setTraceType("rocketmq-provider");
                     try {
                         return methodProxy.invokeSuper(target, args);

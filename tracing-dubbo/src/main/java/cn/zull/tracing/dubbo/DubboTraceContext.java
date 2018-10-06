@@ -22,6 +22,9 @@ public class DubboTraceContext extends AbstractTraceContext implements RpcTraceC
     public TraceDTO consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
         TraceDTO traceDTO = getTraceDTOByRpcContext().spanIdAddLevel();
         traceDTOConsumer.accept(traceDTO);
+
+        printTraceLog(traceDTO);
+
         setContext(traceDTO);
         return traceDTO;
     }

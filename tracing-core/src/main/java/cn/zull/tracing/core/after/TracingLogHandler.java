@@ -1,4 +1,4 @@
-package cn.zull.tracing.core.log;
+package cn.zull.tracing.core.after;
 
 import cn.zull.tracing.core.model.TraceLog;
 

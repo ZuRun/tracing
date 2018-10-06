@@ -2,7 +2,7 @@ package cn.zull.tracing.dubbo.filter;
 
 
 import cn.zull.tracing.core.dto.TraceDTO;
-import cn.zull.tracing.core.log.CollectingLogUtils;
+import cn.zull.tracing.core.after.TracingLogPostProcessingUtils;
 import cn.zull.tracing.core.utils.SpringApplicationContext;
 import cn.zull.tracing.dubbo.DubboTraceContext;
 import cn.zull.tracing.dubbo.RpcTraceContext;
@@ -33,14 +33,14 @@ public class DubboFilter implements Filter {
         String sideVal = invoker.getUrl().getParameter(Constants.SIDE_KEY);
         if (Constants.CONSUMER_SIDE.equals(sideVal)) {
             TraceDTO traceDTO = getTraceContext().product();
-            return CollectingLogUtils.collectionLog(traceDTO, traceLog -> {
+            return TracingLogPostProcessingUtils.collectionLog(traceDTO, traceLog -> {
                 traceLog.setTraceType("dubbo-consumer")
                         .setUrl(invoker.getUrl().toString());
                 return invoker.invoke(invocation);
             });
         } else if (Constants.PROVIDER_SIDE.equals(sideVal)) {
             TraceDTO traceDTO = getTraceContext().consumer(TraceDTO::getTraceId);
-            return CollectingLogUtils.collectionLog(traceDTO, traceLog -> {
+            return TracingLogPostProcessingUtils.collectionLog(traceDTO, traceLog -> {
                 traceLog.setTraceType("dubbo-provider")
                         .setUrl(invoker.getUrl().toString());
                 return invoker.invoke(invocation);

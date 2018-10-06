@@ -24,6 +24,7 @@ public class RestTraceContextImpl extends AbstractTraceContext implements RestTr
     public TraceDTO consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer) {
         TraceDTO traceDTO = getRestTraceDto();
         traceDTOConsumer.accept(traceDTO);
+        printTraceLog(traceDTO);
         return setContext(traceDTO);
     }
 

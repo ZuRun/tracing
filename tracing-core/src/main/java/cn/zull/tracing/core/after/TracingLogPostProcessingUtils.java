@@ -1,4 +1,4 @@
-package cn.zull.tracing.core.log;
+package cn.zull.tracing.core.after;
 
 import cn.zull.tracing.core.configuration.TracingProperties;
 import cn.zull.tracing.core.dto.TraceDTO;
@@ -8,7 +8,7 @@ import cn.zull.tracing.core.model.TraceLog;
 import cn.zull.tracing.core.model.TraceStatusEnum;
 import cn.zull.tracing.core.utils.SpringApplicationContext;
 import cn.zull.tracing.core.utils.TracingGlobal;
-import cn.zull.tracing.core.utils.TracingLogEntityFactory;
+import cn.zull.tracing.core.TracingLogEntityFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +17,14 @@ import org.springframework.stereotype.Component;
 import java.util.function.Function;
 
 /**
+ * 对收集到的日志进行后续处理
+ *
  * @author zurun
  * @date 2018/10/2 15:49:37
  */
 @Component
-public class CollectingLogUtils {
-    private static final Logger logger = LoggerFactory.getLogger(CollectingLogUtils.class);
+public class TracingLogPostProcessingUtils {
+    private static final Logger logger = LoggerFactory.getLogger(TracingLogPostProcessingUtils.class);
 
     @Autowired(required = false)
     TracingLogHandler tracingLogHandler;
@@ -33,7 +35,7 @@ public class CollectingLogUtils {
     @Autowired
     TracingLogEntityFactory tracingLogEntityFactory;
 
-    private static CollectingLogUtils collectingLogs;
+    private static TracingLogPostProcessingUtils collectingLogs;
 
     public <R> R collectionLogs(TraceDTO traceDTO, Function<TraceLog, R> function) {
         TraceLog traceLog = tracingLogEntityFactory.createObject(traceDTO)
@@ -73,11 +75,11 @@ public class CollectingLogUtils {
         return getBean().collectionLogs(traceDTO, function);
     }
 
-    private static CollectingLogUtils getBean() {
+    private static TracingLogPostProcessingUtils getBean() {
         if (collectingLogs == null) {
-            synchronized (CollectingLogUtils.class) {
+            synchronized (TracingLogPostProcessingUtils.class) {
                 if (collectingLogs == null) {
-                    collectingLogs = SpringApplicationContext.getBean(CollectingLogUtils.class);
+                    collectingLogs = SpringApplicationContext.getBean(TracingLogPostProcessingUtils.class);
                 }
                 if (collectingLogs == null) {
                     logger.error("CollectingLogs is null");

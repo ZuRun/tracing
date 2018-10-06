@@ -1,4 +1,4 @@
-package cn.zull.tracing.core.utils;
+package cn.zull.tracing.core;
 
 import cn.zull.tracing.core.configuration.TracingProperties;
 import cn.zull.tracing.core.exception.TracingException;

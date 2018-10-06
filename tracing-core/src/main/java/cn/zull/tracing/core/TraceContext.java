@@ -1,12 +1,22 @@
 package cn.zull.tracing.core;
 
 import cn.zull.tracing.core.dto.TraceDTO;
+import cn.zull.tracing.core.log.LogPrintHandlerUtils;
 
 /**
  * @author zurun
  * @date 2018/9/17 09:25:01
  */
 public interface TraceContext {
+
+    /**
+     * 普通日志中显示链路信息,一般消费方调用
+     *
+     * @param traceDTO
+     */
+    default void printTraceLog(TraceDTO traceDTO) {
+        LogPrintHandlerUtils.logHandler(traceDTO);
+    }
 
     /**
      * 从threadLocal中获取traceDto

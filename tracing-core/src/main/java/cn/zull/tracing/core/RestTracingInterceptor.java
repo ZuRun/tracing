@@ -2,7 +2,7 @@ package cn.zull.tracing.core;
 
 import cn.zull.tracing.core.dto.TraceDTO;
 import cn.zull.tracing.core.exception.TracingInnerException;
-import cn.zull.tracing.core.log.CollectingLogUtils;
+import cn.zull.tracing.core.after.TracingLogPostProcessingUtils;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -21,7 +21,7 @@ public class RestTracingInterceptor implements ClientHttpRequestInterceptor {
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) {
         traceContext.product(request.getHeaders());
         TraceDTO traceDTO = traceContext.provider();
-        return CollectingLogUtils.collectionLog(traceDTO, traceLog -> {
+        return TracingLogPostProcessingUtils.collectionLog(traceDTO, traceLog -> {
             traceLog.setTraceType("RestTemplate")
                     .setUrl(request.getURI().toString());
             try {

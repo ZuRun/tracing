@@ -10,13 +10,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class TracingProperties {
     @Value("${tracing.enable:true}")
-    private Boolean enable ;
+    private Boolean enable;
+
+    /**
+     * 是否将常用链路信息添加到日志文件中(例如log4j等)
+     */
+    @Value("${tracing.logShowTracing:true}")
+    private Boolean logShowTracing;
 
     @Value("${tracing.entity.path:}")
-    private String entityPath ;
+    private String entityPath;
 
     @Value("${server.port:0}")
-    private String serverPort ;
+    private String serverPort;
 
 
     public Boolean getEnable() {
@@ -25,6 +31,15 @@ public class TracingProperties {
 
     public TracingProperties setEnable(Boolean enable) {
         this.enable = enable;
+        return this;
+    }
+
+    public Boolean getLogShowTracing() {
+        return logShowTracing;
+    }
+
+    public TracingProperties setLogShowTracing(Boolean logShowTracing) {
+        this.logShowTracing = logShowTracing;
         return this;
     }
 

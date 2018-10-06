@@ -39,6 +39,7 @@ public class RocketmqTraceContext extends AbstractMqTraceContext {
     public TraceDTO consumer(@NotNull Consumer<TraceDTO> traceDTOConsumer, Message message) {
         TraceDTO traceDTO = JSON.parseObject(message.getUserProperty("tracing"), TraceDTO.class).spanIdAddLevel();
         traceDTOConsumer.accept(traceDTO);
+        printTraceLog(traceDTO);
         return super.setContext(traceDTO);
     }
 
