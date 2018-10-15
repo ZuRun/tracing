@@ -1,3 +1,0 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.zull.tracing.core.utils.TracingAutoConfiguration

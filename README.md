@@ -9,3 +9,4 @@
 1. springboot自动扫描bean的问题
 2. auto configuration
 3. spring.factories
+4. dubbo 异步调用

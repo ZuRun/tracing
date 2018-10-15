@@ -31,7 +31,7 @@ public class RestTraceContextImpl extends AbstractTraceContext implements RestTr
     @Override
     public TraceDTO product(HttpHeaders httpHeaders) {
         TraceDTO traceDTO = super.getThreadLocalTraceDto();
-        httpHeaders.add("tracing", traceDTO.toString());
+        httpHeaders.add("X-Tracing", traceDTO.toString());
         return traceDTO;
     }
 
@@ -45,7 +45,7 @@ public class RestTraceContextImpl extends AbstractTraceContext implements RestTr
         return Optional.of((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .map(ServletRequestAttributes::getRequest)
                 .map(ServletWebRequest::new)
-                .map(servletWebRequest -> servletWebRequest.getHeader("tracing"))
+                .map(servletWebRequest -> servletWebRequest.getHeader("X-Tracing"))
                 .filter(str -> !StringUtils.isEmpty(str))
                 .map(str -> JSON.parseObject(str, TraceDTO.class).spanIdAddLevel())
                 .orElseGet(TraceDTO::getInstance);

@@ -1,6 +1,8 @@
 package cn.zull.tracing.core.configuration;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Component;
  * @date 2018/10/2 18:02:52
  */
 @Component
+@Data
+@PropertySource(value = "classpath:/tracing.properties")
 public class TracingProperties {
     @Value("${tracing.enable:true}")
     private Boolean enable;
@@ -21,43 +25,10 @@ public class TracingProperties {
     @Value("${tracing.entity.path:}")
     private String entityPath;
 
+    @Value("${tracing.rest.filter:true}")
+    private Boolean openDefaultRestFilter;
+
     @Value("${server.port:0}")
     private String serverPort;
 
-
-    public Boolean getEnable() {
-        return enable;
-    }
-
-    public TracingProperties setEnable(Boolean enable) {
-        this.enable = enable;
-        return this;
-    }
-
-    public Boolean getLogShowTracing() {
-        return logShowTracing;
-    }
-
-    public TracingProperties setLogShowTracing(Boolean logShowTracing) {
-        this.logShowTracing = logShowTracing;
-        return this;
-    }
-
-    public String getEntityPath() {
-        return entityPath;
-    }
-
-    public TracingProperties setEntityPath(String entityPath) {
-        this.entityPath = entityPath;
-        return this;
-    }
-
-    public String getServerPort() {
-        return serverPort;
-    }
-
-    public TracingProperties setServerPort(String serverPort) {
-        this.serverPort = serverPort;
-        return this;
-    }
 }

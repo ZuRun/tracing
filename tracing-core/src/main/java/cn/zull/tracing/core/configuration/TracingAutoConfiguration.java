@@ -1,4 +1,4 @@
-package cn.zull.tracing.core.utils;
+package cn.zull.tracing.core.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = {"cn.zull.tracing"})
 public class TracingAutoConfiguration {
 
-    public TracingAutoConfiguration(){
+    public TracingAutoConfiguration() {
         System.out.println("------TracingAutoConfiguration------");
     }
 }
