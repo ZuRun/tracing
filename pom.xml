@@ -12,6 +12,7 @@
         <module>tracing-core</module>
         <module>tracing-dubbo</module>
         <module>tracing-rocketmq</module>
+        <module>tracing-mybatis</module>
     </modules>
 
     <properties>
