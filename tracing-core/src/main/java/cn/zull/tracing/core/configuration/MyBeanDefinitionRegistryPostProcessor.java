@@ -7,8 +7,6 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.stereotype.Component;
 
 /**
  * 实现自定义的注册bean定义的逻辑
@@ -16,8 +14,8 @@ import org.springframework.stereotype.Component;
  * @author zurun
  * @date 2018/10/15 20:59:59
  */
-@Component
-@DependsOn("springApplicationContextUtils")
+//@Component
+//@DependsOn("springApplicationContextUtils")
 public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor {
     @Autowired
     TracingProperties tracingProperties;
@@ -25,7 +23,9 @@ public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegi
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
         // 是否启用默认http请求拦截器
-        if (tracingProperties.getOpenDefaultRestFilter()) {
+        //TODO-zurun TracingProperties无法注入,后续修复
+//        if (tracingProperties.getOpenDefaultRestFilter()) {
+        if (true) {
             RootBeanDefinition tracingFilter = new RootBeanDefinition(TracingFilter.class);
             //新增Bean定义
             beanDefinitionRegistry.registerBeanDefinition("tracingFilter", tracingFilter);
