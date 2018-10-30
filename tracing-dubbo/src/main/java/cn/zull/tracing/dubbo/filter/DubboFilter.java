@@ -22,10 +22,6 @@ public class DubboFilter implements Filter {
 
     private volatile RpcTraceContext traceContext;
 
-    public DubboFilter() {
-        System.out.println("-------Dubbo Filter-------");
-    }
-
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         // 线程入口是dubbo的,记得先清空线程绑定的变量(使用线程池的情况下)

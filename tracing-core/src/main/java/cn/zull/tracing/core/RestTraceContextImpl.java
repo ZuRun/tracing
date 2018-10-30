@@ -42,7 +42,7 @@ public class RestTraceContextImpl extends AbstractTraceContext implements RestTr
     }
 
     private TraceDTO getRestTraceDto() {
-        return Optional.of((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+        return Optional.ofNullable((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .map(ServletRequestAttributes::getRequest)
                 .map(ServletWebRequest::new)
                 .map(servletWebRequest -> servletWebRequest.getHeader("X-Tracing"))
