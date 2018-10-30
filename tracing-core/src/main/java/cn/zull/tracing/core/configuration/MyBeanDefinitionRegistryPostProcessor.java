@@ -7,6 +7,8 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.stereotype.Component;
 
 /**
  * 实现自定义的注册bean定义的逻辑
@@ -14,8 +16,8 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
  * @author zurun
  * @date 2018/10/15 20:59:59
  */
-//@Component
-//@DependsOn("springApplicationContextUtils")
+@Component
+@DependsOn("springApplicationContextUtils")
 public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor {
     @Autowired
     TracingProperties tracingProperties;

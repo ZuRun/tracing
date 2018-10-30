@@ -8,7 +8,7 @@
 1. 把父模块更新到指定版本号，然后更新子模块，与父模块有相同的版本号
 
     ```
-    mvn versions:set -DnewVersion=0.0.9-RELEASE
+    mvn versions:set -DnewVersion=0.0.10-RELEASE
     mvn -N versions:update-child-modules  
     ```
 

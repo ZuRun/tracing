@@ -7,7 +7,7 @@
     <groupId>cn.zull.tracing</groupId>
     <artifactId>all</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.9-RELEASE</version>
+    <version>0.0.10-RELEASE</version>
     <modules>
         <module>tracing-core</module>
         <module>tracing-dubbo</module>
