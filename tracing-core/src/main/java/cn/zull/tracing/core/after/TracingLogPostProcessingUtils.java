@@ -40,6 +40,8 @@ public class TracingLogPostProcessingUtils {
     public <R> R collectionLogs(TraceDTO traceDTO, Function<TraceLog, R> function) {
         TraceLog traceLog = tracingLogEntityFactory.createObject(traceDTO)
                 .setEndPoint(TracingGlobal.getInstance().getHostInfo().getEndPoint());
+        // 判断function.apply(traceLog)是否抛异常了
+        Boolean isThrowable = true;
         try {
             R r = function.apply(traceLog);
             if (r instanceof RuntimeException) {
@@ -55,8 +57,12 @@ public class TracingLogPostProcessingUtils {
                 traceLog.setStatus(TraceStatusEnum.FAIL);
                 throw new TracingInnerException(throwable);
             }
+            isThrowable = false;
             return r;
         } finally {
+            if (isThrowable) {
+                traceLog.setStatus(TraceStatusEnum.FAIL);
+            }
             try {
                 traceLog.stop();
                 logger.info(traceLog.toString());

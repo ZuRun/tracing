@@ -36,7 +36,7 @@ public class DubboTraceContext extends AbstractTraceContext implements RpcTraceC
 
 
     /**
-     * 从rpcContext读取
+     * 从rpcContext读取 隐式参数
      *
      * @return
      */
@@ -46,7 +46,7 @@ public class DubboTraceContext extends AbstractTraceContext implements RpcTraceC
     }
 
     protected Map<String, String> traceDto2Map(TraceDTO traceDTO) {
-        Map<String, String> map = new HashMap(3);
+        Map<String, String> map = new HashMap<>(3);
         map.put("traceId", traceDTO.getTraceId());
         map.put("spanId", traceDTO.getSpanId());
         map.put("ctm", traceDTO.getCtm());

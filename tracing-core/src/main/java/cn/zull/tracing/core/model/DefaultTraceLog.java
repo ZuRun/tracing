@@ -1,7 +1,6 @@
 package cn.zull.tracing.core.model;
 
 import cn.zull.tracing.core.dto.TraceDTO;
-import com.alibaba.fastjson.JSON;
 
 /**
  * @author zurun
@@ -52,9 +51,21 @@ public class DefaultTraceLog implements TraceLog {
 
     @Override
     public String toString() {
-        return JSON.toJSONString(this);
+        return "DefaultTraceLog{" +
+                "traceDTO=" + traceDTO +
+                ", startTime=" + startTime +
+                ", traceId='" + traceId + '\'' +
+                ", spanId='" + spanId + '\'' +
+                ", traceType='" + traceType + '\'' +
+                ", endPoint='" + endPoint + '\'' +
+                ", url='" + url + '\'' +
+                ", ctm='" + ctm + '\'' +
+                ", cost='" + cost + '\'' +
+                ", stm='" + stm + '\'' +
+                ", etm='" + etm + '\'' +
+                ", status=" + status +
+                '}';
     }
-
 
     @Override
     public TraceLog setTraceDTO(TraceDTO traceDTO) {

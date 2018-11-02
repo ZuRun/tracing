@@ -4,7 +4,7 @@
 #### gradle
     // 全局设置版本号
     ext {
-        tracing_version = '0.0.10-RELEASE'
+        tracing_version = '0.0.11-RELEASE'
     }
     
     compile "cn.zull.tracing:tracing-core:${tracing_version}" 

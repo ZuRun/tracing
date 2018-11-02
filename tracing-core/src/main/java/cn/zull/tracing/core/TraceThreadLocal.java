@@ -9,12 +9,16 @@ import cn.zull.tracing.core.dto.TraceDTO;
 public class TraceThreadLocal {
     private static final ThreadLocal<TraceDTO> context = ThreadLocal.withInitial(TraceDTO::getInstance);
 
-    protected static void setContext(TraceDTO traceDTO) {
+    public static void setContext(TraceDTO traceDTO) {
         context.set(traceDTO);
     }
 
-    protected static TraceDTO getContext() {
+    public static TraceDTO getContext() {
         return context.get();
     }
-
+    
+    public static String getTraceId() {
+        TraceDTO traceDTO = context.get();
+        return traceDTO == null ? null : traceDTO.getTraceId();
+    }
 }

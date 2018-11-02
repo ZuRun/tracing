@@ -5,7 +5,7 @@
     <parent>
         <artifactId>all</artifactId>
         <groupId>cn.zull.tracing</groupId>
-        <version>0.0.10-RELEASE</version>
+        <version>0.0.12-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>cn.zull.tracing</groupId>
             <artifactId>tracing-core</artifactId>
-            <version>0.0.10-RELEASE</version>
+            <version>0.0.12-RELEASE</version>
         </dependency>
         <!--dubbo 详见 https://github.com/apache/incubator-dubbo-spring-boot-project/blob/master/README_CN.md-->
         <dependency>

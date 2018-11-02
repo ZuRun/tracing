@@ -3,6 +3,7 @@ package cn.zull.tracing.dubbo.filter;
 
 import cn.zull.tracing.core.dto.TraceDTO;
 import cn.zull.tracing.core.after.TracingLogPostProcessingUtils;
+import cn.zull.tracing.core.model.TraceStatusEnum;
 import cn.zull.tracing.core.utils.SpringApplicationContext;
 import cn.zull.tracing.dubbo.DubboTraceContext;
 import cn.zull.tracing.dubbo.RpcTraceContext;
@@ -32,14 +33,24 @@ public class DubboFilter implements Filter {
             return TracingLogPostProcessingUtils.collectionLog(traceDTO, traceLog -> {
                 traceLog.setTraceType("dubbo-consumer")
                         .setUrl(invoker.getUrl().toString());
-                return invoker.invoke(invocation);
+                // 判断是否请求成功
+                Result result = invoker.invoke(invocation);
+                if (result.hasException()) {
+                    traceLog.setStatus(TraceStatusEnum.FAIL);
+                }
+                return result;
             });
         } else if (Constants.PROVIDER_SIDE.equals(sideVal)) {
             TraceDTO traceDTO = getTraceContext().consumer(TraceDTO::getTraceId);
             return TracingLogPostProcessingUtils.collectionLog(traceDTO, traceLog -> {
                 traceLog.setTraceType("dubbo-provider")
                         .setUrl(invoker.getUrl().toString());
-                return invoker.invoke(invocation);
+                Result result = invoker.invoke(invocation);
+                // 判断是否请求成功
+                if (result.hasException()) {
+                    traceLog.setStatus(TraceStatusEnum.FAIL);
+                }
+                return result;
             });
         }
         return invoker.invoke(invocation);
