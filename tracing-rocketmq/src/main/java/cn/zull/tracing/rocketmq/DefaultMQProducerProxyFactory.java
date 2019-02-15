@@ -82,7 +82,7 @@ public class DefaultMQProducerProxyFactory implements MethodInterceptor {
             Object object = args[0];
             if (object instanceof Message) {
                 Message message = (Message) object;
-                logger.info("mq生产");
+                logger.debug("mq生产");
 
                 return TracingLogPostProcessingUtils.collectionLog(trace(message), traceLog -> {
                     traceLog.setTraceType("rocketmq-provider");
@@ -95,7 +95,7 @@ public class DefaultMQProducerProxyFactory implements MethodInterceptor {
                 });
             } else if (object instanceof Collection) {
                 Collection<Message> collection = (Collection) object;
-                logger.info("mq 群发message");
+                logger.debug("mq 群发message");
                 collection.forEach(this::trace);
             }
 

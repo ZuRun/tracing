@@ -65,11 +65,10 @@ public class TracingLogPostProcessingUtils {
             }
             try {
                 traceLog.stop();
-                logger.info(traceLog.toString());
                 if (tracingProperties.getEnable() && tracingLogHandler != null) {
                     tracingLogHandler.handler(traceLog);
                 } else {
-                    logger.info("不收集日志");
+                    logger.debug("不收集日志");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -60,7 +60,7 @@ public class RestTemplateFactory<T extends RestTemplate> implements MethodInterc
     public Object intercept(Object target, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
         if ("createRequest".equals(method.getName())) {
             ClientHttpRequest clientHttpRequest = (ClientHttpRequest) methodProxy.invokeSuper(target, args);
-            logger.info(method.getName());
+            logger.debug(method.getName());
 
             traceContext.product(clientHttpRequest.getHeaders());
 

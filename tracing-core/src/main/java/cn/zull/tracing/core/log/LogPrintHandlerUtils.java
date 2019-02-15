@@ -28,7 +28,7 @@ public class LogPrintHandlerUtils {
 
     public void handler(TraceDTO traceDTO) {
         if (!properties.getLogShowTracing()) {
-            logger.info("普通日志中不记录链路信息");
+            logger.debug("普通日志中不记录链路信息");
             return;
         }
         if (logPrintHandler == null) {

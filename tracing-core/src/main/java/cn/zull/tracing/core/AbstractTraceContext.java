@@ -40,13 +40,13 @@ public abstract class AbstractTraceContext implements TraceContext {
         TraceDTO traceDTO = getContext().spanIdPlusOne();
         consumer.accept(traceDTO);
         setContext(traceDTO);
-        logger.info("getAndSet traceDTO:{}", getContext());
+//        logger.debug("getAndSet traceDTO:{}", getContext());
         return traceDTO;
     }
 
     protected TraceDTO setContext(TraceDTO traceDTO) {
         TraceThreadLocal.setContext(traceDTO);
-        logger.info("update traceDTO:{}", getContext());
+//        logger.debug("update traceDTO:{}", getContext());
         return traceDTO;
     }
 }

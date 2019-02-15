@@ -26,7 +26,7 @@ public class DubboFilter implements Filter {
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         // 线程入口是dubbo的,记得先清空线程绑定的变量(使用线程池的情况下)
-        logger.info("dubbo filter");
+        logger.debug("dubbo filter");
         String sideVal = invoker.getUrl().getParameter(Constants.SIDE_KEY);
         if (Constants.CONSUMER_SIDE.equals(sideVal)) {
             TraceDTO traceDTO = getTraceContext().product();
