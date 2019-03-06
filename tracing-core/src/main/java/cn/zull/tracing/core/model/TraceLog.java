@@ -47,6 +47,7 @@ public interface TraceLog extends TraceLogGetAndSet {
         return this;
     }
 
+
     /**
      * 记录traceDTO
      *

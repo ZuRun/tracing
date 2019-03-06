@@ -25,7 +25,8 @@ public class RestTracingInterceptor implements ClientHttpRequestInterceptor {
             traceLog.setTraceType("RestTemplate")
                     .setUrl(request.getURI().toString());
             try {
-                return execution.execute(request, body);
+                ClientHttpResponse response = execution.execute(request, body);
+                return response;
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new TracingInnerException(e);

@@ -41,7 +41,7 @@ public class TracingLogEntityFactory {
                         return clazz;
                     }
                     Class<?> c = Class.forName(path);
-                    if (c.isAssignableFrom(TraceLog.class)) {
+                    if (TraceLog.class.isAssignableFrom(c)) {
                         clazz = (Class<TraceLog>) c;
                     } else {
                         tracingProperties.setEnable(false);

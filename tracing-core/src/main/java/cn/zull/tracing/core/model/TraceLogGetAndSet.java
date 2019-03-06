@@ -62,6 +62,24 @@ public interface TraceLogGetAndSet {
     TraceLog setEtm(String etm);
 
     /**
+     * 返回体
+     *
+     * @return
+     */
+    String getRespkg();
+
+    DefaultTraceLog setRespkg(String respkg);
+
+    /**
+     * 请求体
+     *
+     * @return
+     */
+    String getReqpkg();
+
+    DefaultTraceLog setReqpkg(String reqpkg);
+
+    /**
      * 链路是否成功
      *
      * @return

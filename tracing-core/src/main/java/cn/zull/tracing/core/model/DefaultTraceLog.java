@@ -41,6 +41,29 @@ public class DefaultTraceLog implements TraceLog {
      * 结束时间
      */
     private String etm;
+
+    private String respkg;
+    private String reqpkg;
+
+    @Override
+    public String getRespkg() {
+        return respkg;
+    }
+    @Override
+    public DefaultTraceLog setRespkg(String respkg) {
+        this.respkg = respkg;
+        return this;
+    }
+    @Override
+    public String getReqpkg() {
+        return reqpkg;
+    }
+    @Override
+    public DefaultTraceLog setReqpkg(String reqpkg) {
+        this.reqpkg = reqpkg;
+        return this;
+    }
+
     /**
      * 链路是否成功
      */

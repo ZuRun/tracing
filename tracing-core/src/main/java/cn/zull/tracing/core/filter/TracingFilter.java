@@ -6,6 +6,8 @@ import cn.zull.tracing.core.dto.TraceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -24,13 +26,19 @@ public class TracingFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         TraceDTO traceDto = traceContext.consumer(traceDTO -> {
-
         });
+        BodyCachingHttpServletRequestWrapper requestWrapper =
+                new BodyCachingHttpServletRequestWrapper((HttpServletRequest) servletRequest);
+        BodyCachingHttpServletResponseWrapper responseWrapper = new BodyCachingHttpServletResponseWrapper((HttpServletResponse) servletResponse);
+
         TracingLogPostProcessingUtils.collectionLog(traceDto, traceLog -> {
             try {
-                traceLog.setTraceType("http-filter");
+                traceLog.setTraceType("http-filter").setReqpkg(requestWrapper.getBodyString())
+                        .setUrl(((HttpServletRequest) servletRequest).getRequestURL().toString());
                 // 过滤的实际业务
                 filterChain.doFilter(servletRequest, servletResponse);
+                // 记录返回的body
+                traceLog.setRespkg(responseWrapper.getBodyString());
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
