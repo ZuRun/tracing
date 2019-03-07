@@ -36,7 +36,7 @@ public class TracingFilter implements Filter {
                 traceLog.setTraceType("http-filter").setReqpkg(requestWrapper.getBodyString())
                         .setUrl(((HttpServletRequest) servletRequest).getRequestURL().toString());
                 // 过滤的实际业务
-                filterChain.doFilter(servletRequest, servletResponse);
+                filterChain.doFilter(requestWrapper, responseWrapper);
                 // 记录返回的body
                 traceLog.setRespkg(responseWrapper.getBodyString());
             } catch (Throwable throwable) {

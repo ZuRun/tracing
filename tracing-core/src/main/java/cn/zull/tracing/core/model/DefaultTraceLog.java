@@ -86,6 +86,8 @@ public class DefaultTraceLog implements TraceLog {
                 ", cost='" + cost + '\'' +
                 ", stm='" + stm + '\'' +
                 ", etm='" + etm + '\'' +
+                ", respkg='" + respkg + '\'' +
+                ", reqpkg='" + reqpkg + '\'' +
                 ", status=" + status +
                 '}';
     }
