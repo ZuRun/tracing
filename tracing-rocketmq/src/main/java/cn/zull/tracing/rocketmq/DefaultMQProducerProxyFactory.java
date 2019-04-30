@@ -1,7 +1,7 @@
 package cn.zull.tracing.rocketmq;
 
-import cn.zull.tracing.core.dto.TraceDTO;
 import cn.zull.tracing.core.after.TracingLogPostProcessingUtils;
+import cn.zull.tracing.core.dto.TraceDTO;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.slf4j.Logger;
@@ -11,6 +11,7 @@ import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 /**
@@ -85,7 +86,8 @@ public class DefaultMQProducerProxyFactory implements MethodInterceptor {
                 logger.debug("mq生产");
 
                 return TracingLogPostProcessingUtils.collectionLog(trace(message), traceLog -> {
-                    traceLog.setTraceType("rocketmq-provider");
+                    traceLog.setTraceType("rocketmq-provider")
+                            .setReqpkg(new String(message.getBody(), StandardCharsets.UTF_8));
                     try {
                         return methodProxy.invokeSuper(target, args);
                     } catch (Throwable throwable) {
