@@ -46,7 +46,9 @@ public class TracingLogPostProcessingUtils {
         try {
             R r = function.apply(traceLog);
             // 因为dubbo的RpcResult封装了异常，需要判断是否包含异常信息
-            if ("com.alibaba.dubbo.rpc.RpcResult".equals(r.getClass().getName())) {
+            if (r == null) {
+
+            } else if ("com.alibaba.dubbo.rpc.RpcResult".equals(r.getClass().getName())) {
                 try {
                     Field field = r.getClass().getDeclaredField("exception");
                     field.setAccessible(true);
