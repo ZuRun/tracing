@@ -44,6 +44,7 @@ public class DubboFilter implements Filter {
                 if (result.hasException()) {
                     traceLog.setStatus(TraceStatusEnum.FAIL);
                 }
+                traceLog.setRespkg(JSON.toJSONString(result.getValue()));
                 return result;
             });
         } else if (Constants.PROVIDER_SIDE.equals(sideVal)) {
@@ -61,6 +62,7 @@ public class DubboFilter implements Filter {
                 if (result.hasException()) {
                     traceLog.setStatus(TraceStatusEnum.FAIL);
                 }
+                traceLog.setRespkg(JSON.toJSONString(result.getValue()));
                 return result;
             });
         }

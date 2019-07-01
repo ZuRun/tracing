@@ -18,6 +18,9 @@ public class TracingFilter implements Filter {
     @Autowired
     RestTraceContext traceContext;
 
+    @Autowired
+    HttpTracingRequestFilter requestFilter;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -25,6 +28,11 @@ public class TracingFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        if (requestFilter != null && !requestFilter.beforeTrace(servletRequest)) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         TraceDTO traceDto = traceContext.consumer(traceDTO -> {
         });
         BodyCachingHttpServletRequestWrapper requestWrapper =
