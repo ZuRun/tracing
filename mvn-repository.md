@@ -10,7 +10,7 @@
     ```
     mvn versions:set -DnewVersion=0.0.15-RELEASE
     ## 为iot定制的版本
-    mvn versions:set -DnewVersion=0.5.10-RELEASE
+    mvn versions:set -DnewVersion=0.5.11-RELEASE
     mvn -N versions:update-child-modules  
     ```
 

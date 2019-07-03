@@ -1,5 +1,7 @@
-package cn.zull.tracing.core;
+package cn.zull.tracing.core.resttemplate;
 
+import cn.zull.tracing.core.RestTraceContext;
+import cn.zull.tracing.core.RestTraceContextImpl;
 import cn.zull.tracing.core.after.TracingLogPostProcessingUtils;
 import cn.zull.tracing.core.dto.TraceDTO;
 import cn.zull.tracing.core.exception.TracingInnerException;
@@ -21,12 +23,12 @@ public class RestTracingInterceptor implements ClientHttpRequestInterceptor {
     /**
      * request发送之前
      */
-    private BiConsumer<TraceLog, HttpRequest> beforeConsumer = (a, b) -> {
+    private ThreeArgsConsumer<TraceLog, HttpRequest, byte[]> beforeConsumer = (a, b, c) -> {
     };
     /**
      * 接受到resp后
      */
-    private BiConsumer<TraceLog, ClientHttpResponse> afterConsumer = (a, b) -> {
+    private BiConsumer<TraceLog, TracingClientHttpResponse> afterConsumer = (a, b) -> {
     };
 
     @Override
@@ -35,11 +37,12 @@ public class RestTracingInterceptor implements ClientHttpRequestInterceptor {
         TraceDTO traceDTO = traceContext.provider();
         return TracingLogPostProcessingUtils.collectionLog(traceDTO, traceLog -> {
             traceLog.setTraceType("RestTemplate").setUrl(request.getURI().toString());
-            beforeConsumer.accept(traceLog, request);
+            beforeConsumer.accept(traceLog, request, body);
             try {
                 ClientHttpResponse response = execution.execute(request, body);
-                afterConsumer.accept(traceLog, response);
-                return response;
+                TracingClientHttpResponse tracingClientHttpResponse = new ClientHttpResponseWrapper(response);
+                afterConsumer.accept(traceLog, tracingClientHttpResponse);
+                return tracingClientHttpResponse;
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new TracingInnerException(e);
@@ -48,18 +51,11 @@ public class RestTracingInterceptor implements ClientHttpRequestInterceptor {
 
     }
 
-    public void beforeRequest(BiConsumer<TraceLog, HttpRequest> beforeConsumer) {
+    public void beforeRequest(ThreeArgsConsumer<TraceLog, HttpRequest, byte[]> beforeConsumer) {
         this.beforeConsumer = beforeConsumer;
     }
 
-    public void afterRequest(BiConsumer<TraceLog, ClientHttpResponse> afterConsumer) {
+    public void afterRequest(BiConsumer<TraceLog, TracingClientHttpResponse> afterConsumer) {
         this.afterConsumer = afterConsumer;
-    }
-
-    public static void main(String[] args) {
-        ClientHttpRequestInterceptor interceptor = new RestTracingInterceptor();
-        ((RestTracingInterceptor) interceptor).beforeRequest((traceLog, req) -> {
-//            req.getHeaders().get
-        });
     }
 }
